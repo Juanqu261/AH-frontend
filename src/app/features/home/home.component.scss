@@ -1,0 +1,29 @@
+.silver-border {
+    border: 1px solid #E5E4E2;
+}
+
+.silver-text {
+    color: #E5E4E2;
+}
+
+.bg-charcoal-gradient {
+    background: radial-gradient(circle at 20% 30%, #1a1a1a 0%, #121212 100%);
+}
+
+.accent-shape {
+    background: radial-gradient(circle, rgba(45, 27, 54, 0.4) 0%, transparent 70%);
+}
+
+.vogue-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    line-height: 0.85;
+}
+
+.abstract-shape {
+    position: absolute;
+    z-index: 0;
+    background: radial-gradient(circle, #2B1B3D 0%, rgba(18, 18, 18, 0) 70%);
+    filter: blur(60px);
+    opacity: 0.6;
+}
