@@ -2,8 +2,12 @@ const fs = require('fs');
 
 const targetPath = './src/environments/environment.prod.ts';
 
-// We provide a fallback just in case it is run without the variable explicitly set
-const apiUrl = process.env.API_URL || 'https://YOUR_BACKEND_DOMAIN.com/api';
+let apiUrl = 'https://YOUR_BACKEND_DOMAIN.com/api';
+
+if (process.env.API_URL) {
+    // Decode the Base64 string from Netlify back to a normal text URL during the build
+    apiUrl = Buffer.from(process.env.API_URL, 'base64').toString('utf-8');
+}
 
 const envConfigFile = `export const environment = {
     production: true,
