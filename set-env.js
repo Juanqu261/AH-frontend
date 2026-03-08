@@ -2,16 +2,13 @@ const fs = require('fs');
 
 const targetPath = './src/environments/environment.prod.ts';
 
-let apiUrl = 'https://YOUR_BACKEND_DOMAIN.com/api';
+const apiUrl = process.env.API_URL || 'https://YOUR_BACKEND_DOMAIN.com/api';
 
-if (process.env.API_URL) {
-    // Decode the Base64 string from Netlify back to a normal text URL during the build
-    apiUrl = Buffer.from(process.env.API_URL, 'base64').toString('utf-8');
-}
+const base64Url = Buffer.from(apiUrl).toString('base64');
 
 const envConfigFile = `export const environment = {
     production: true,
-    apiUrl: '${apiUrl}',
+    apiUrl: atob('${base64Url}'),
     shopifyBaseUrl: 'https://adagiozandharmonie.myshopify.com/products/'
 };
 `;
