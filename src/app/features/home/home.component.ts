@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FooterComponent } from '../../shared/components/footer/footer.component';
 
 import { gsap } from 'gsap';
 
