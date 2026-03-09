@@ -1,14 +1,34 @@
-/* Core variables and resets */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Core variables */
 :root {
-  --primary: #2c3e50;
-  --secondary: #e74c3c;
-  --background: #f8f9fa;
-  --text: #212529;
+  --accent-purple: #2B1B3D;
+  --silver: #E5E4E2;
+  --charcoal: #121212;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--background);
-  color: var(--text);
+  background-color: #121212;
+  color: #E5E4E2;
+}
+
+/* Subtle purple scrollbar on webkit */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(43, 27, 61, 0.8);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2B1B3D;
 }

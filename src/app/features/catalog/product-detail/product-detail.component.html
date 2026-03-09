@@ -29,7 +29,8 @@
             <!-- Left Side: Sticky Image (GSAP Target) -->
             <div class="lg:col-span-5 relative">
                 <div class="sticky top-40 gsap-pdp-image">
-                    <div class="aspect-[3/4] max-h-[75vh] overflow-hidden border border-silver/10 p-2 bg-charcoal/20">
+                    <div
+                        class="aspect-[3/4] max-h-[75vh] overflow-hidden border border-accent-purple/30 hover:border-accent-purple/70 transition-colors duration-500 p-2 bg-charcoal/20">
                         <!-- Prioritize url over cloudinaryUrl as per user request -->
                         <img [src]="(product.images && product.images.length > 0 && product.images[0].url) ? product.images[0].url : 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2787&auto=format&fit=crop'"
                             [alt]="product.name"
@@ -54,7 +55,8 @@
                     </p>
                 </div>
 
-                <div class="w-full h-[1px] bg-silver/10 mb-16 gsap-pdp-header"></div>
+                <div class="w-full h-px mb-16 gsap-pdp-header"
+                    style="background: linear-gradient(to right, #2B1B3D, rgba(43,27,61,0.1));"></div>
 
                 <!-- Description & Details (GSAP Target) -->
                 <div class="gsap-pdp-details flex flex-col gap-12 font-outfit font-light">
@@ -104,7 +106,8 @@
                     </div>
                 </div>
 
-                <div class="w-full h-[1px] bg-silver/10 my-16 gsap-pdp-header"></div>
+                <div class="w-full h-px my-16 gsap-pdp-header"
+                    style="background: linear-gradient(to right, #2B1B3D, rgba(43,27,61,0.1));"></div>
 
                 <!-- Outbound Call To Action (Strict 'Catalog Mode' Rule) -->
                 <div class="gsap-pdp-action">
