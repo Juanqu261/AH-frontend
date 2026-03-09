@@ -1,9 +1,16 @@
-<div class="relative min-h-screen bg-charcoal-gradient overflow-x-hidden pt-32 pb-48 text-silver">
+<div class="relative min-h-screen bg-charcoal-gradient overflow-x-hidden pt-12 pb-48 text-silver">
     <div class="abstract-shape w-[800px] h-[800px] top-20 -right-20"></div>
     <div class="abstract-shape w-[600px] h-[600px] bottom-0 -left-10 opacity-30"></div>
 
 
-    <div class="max-w-[1400px] mx-auto px-6 lg:px-20 relative z-10 w-full mt-10">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-20 relative z-10 w-full mt-2">
+
+        <!-- Contextual Navigation -->
+        <a routerLink="/catalog"
+            class="inline-flex items-center gap-2 text-silver/50 hover:text-white transition-colors mb-12 text-[10px] tracking-widest uppercase font-outfit cursor-pointer">
+            <span class="material-symbols-outlined text-sm">west</span>
+            Return to Catalog
+        </a>
 
         <!-- Loading State -->
         @if (isLoading) {
