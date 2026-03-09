@@ -12,7 +12,7 @@
             <div class="gsap-header flex flex-col md:flex-row justify-between items-end">
                 <h1 class="vogue-text text-6xl md:text-[120px] text-silver leading-none">{{ pageTitle }}</h1>
                 <p
-                    class="text-silver/40 text-xs tracking-[0.2em] uppercase max-w-[250px] md:text-right font-outfit mt-8 md:mt-0">
+                    class="text-silver/80 text-xs tracking-[0.2em] uppercase max-w-[250px] md:text-right font-outfit mt-8 md:mt-0">
                     A curation of avant-garde olfactory architecture.
                 </p>
             </div>
@@ -28,7 +28,7 @@
                         {{ (idx % 3 === 0) ? 'md:col-span-8' : (idx % 3 === 1) ? 'md:col-span-4 md:mt-40' : 'md:col-span-6 md:col-start-4' }}">
 
                 <a [routerLink]="['/products', formatNameForUrl(product.name)]"
-                    class="block aspect-[4/5] overflow-hidden group border border-silver/10 p-1 bg-charcoal/20">
+                    class="block aspect-[4/5] max-h-[60vh] overflow-hidden group border border-silver/10 p-1 bg-charcoal/20">
                     <img [src]="(product.images && product.images.length > 0 && product.images[0].url) ? product.images[0].url : 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2787&auto=format&fit=crop'"
                         [alt]="product.name"
                         class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100 cursor-pointer" />
@@ -39,7 +39,7 @@
                         <h3 class="font-serif text-3xl text-slate-100 vogue-text italic">
                             <a [routerLink]="['/products', formatNameForUrl(product.name)]">{{ product.name }}</a>
                         </h3>
-                        <p class="text-slate-500 text-xs font-outfit tracking-widest mt-2 uppercase">EAU DE PARFUM</p>
+                        <p class="text-silver/80 text-xs font-outfit tracking-widest mt-2 uppercase">EAU DE PARFUM</p>
                     </div>
                     <div class="flex flex-col items-end gap-2">
                         <p class="font-outfit font-light text-silver text-xl">{{ (product.priceCents / 100) |
@@ -53,8 +53,8 @@
             </div>
             } @empty {
             <div class="col-span-12 flex flex-col items-center justify-center py-40 border border-silver/10">
-                <span class="material-symbols-outlined text-silver/50 text-4xl mb-4">hourglass_empty</span>
-                <p class="text-center text-silver/50 font-outfit font-light tracking-widest uppercase">The collection is
+                <span class="material-symbols-outlined text-silver text-4xl mb-4">hourglass_empty</span>
+                <p class="text-center text-silver font-outfit font-light tracking-widest uppercase">The collection is
                     currently resting.</p>
             </div>
             }
