@@ -24,6 +24,11 @@ Important modules include:
 *   **`HomeComponent`**: A dedicated landing page focusing purely on brand presentation ("Uncompromising Sourcing", "Curated Excellence"), introducing the user to the aesthetic.
 *   **`CollectionListComponent`**: The main catalog gallery, featuring an asymmetrical, staggered masonry layout for fragrance discovery.
 *   **`ProductDetailComponent` (PDP)**: A deep-dive experience utilizing an "Extreme Tension" layout. The flacon image is pinned to the screen while editorial copy scrolls. Includes visual representations of the fragrance's distinct Olfactory Structure (Top, Heart, and Base notes).
+*   **`NavbarComponent` / `FooterComponent`** *(shared)*: Both are standalone components mounted globally in `app.component.html`, above and below the `<router-outlet>`. They persist across all routes — do **not** add them to individual page templates.
+
+## Key Implementation Decisions
+
+*   **Product routing** uses `/products/:name` (SEO-friendly slugs). The PDP does **not** call a backend search endpoint. Instead, it fetches a batch of products and maps the URL slug to the correct product in-memory via `formatNameForUrl(product.name)`. This is intentional — the backend search had lossy string matching.
 
 ## Development Server
 
