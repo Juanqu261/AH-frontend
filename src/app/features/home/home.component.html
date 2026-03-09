@@ -8,30 +8,6 @@
 
     <div class="layout-container flex h-full grow flex-col">
         <!-- Navigation -->
-        <header
-            class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-700/50 px-6 lg:px-20 py-6 relative z-50">
-            <div class="flex items-center gap-12">
-                <div class="flex items-center gap-3 text-slate-100">
-                    <img src="assets/logo.png" alt="A&H Logo"
-                        class="h-8 md:h-10 object-contain mix-blend-screen opacity-90" />
-                </div>
-                <nav class="hidden md:flex items-center gap-10">
-                    <a routerLink="/collections"
-                        class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors">Collections</a>
-                    <a class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors"
-                        href="#">Bespoke</a>
-                    <a class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors"
-                        href="#">Heritage</a>
-                </nav>
-            </div>
-            <div class="flex items-center gap-6">
-                <a routerLink="/catalog"
-                    class="flex min-w-[120px] cursor-pointer items-center justify-center border border-primary px-6 py-2 bg-transparent text-silver text-xs font-bold uppercase tracking-widest hover:bg-slate-800 transition-all border-silver">
-                    Shop Now
-                </a>
-            </div>
-        </header>
-
         <main class="flex-1 max-w-[1400px] mx-auto px-6 lg:px-20 py-16 z-10 w-full relative">
 
             <!-- HERO SECTION (GSAP Targets) -->
@@ -46,7 +22,7 @@
                     </h1>
 
                     <p
-                        class="gsap-hero-text text-silver/70 font-outfit font-light text-lg max-w-md mb-10 leading-relaxed pl-4 border-l border-silver/30">
+                        class="gsap-hero-text text-silver/90 font-outfit font-light text-lg max-w-md mb-10 leading-relaxed pl-4 border-l-2 border-accent-purple">
                         A raw dialogue between earth and atmosphere. Structured for the bold, scented for the poetic.
                     </p>
 
@@ -63,7 +39,7 @@
                 <!-- Hero Image -->
                 <div class="order-1 lg:order-2 relative gsap-hero-image">
                     <div
-                        class="aspect-[4/5] w-full lg:w-[85%] ml-auto rounded-sm overflow-hidden silver-border p-1 bg-charcoal/40 group relative">
+                        class="aspect-[4/5] max-h-[70vh] w-full lg:w-[85%] ml-auto rounded-sm overflow-hidden silver-border p-1 bg-charcoal/40 group relative">
                         <img alt="Luxury perfume bottle"
                             class="w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 transition-transform duration-700"
                             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUXxEdVoRPXX0tYyUVnp1uo8ImCCgUgXxtZrRp-1D8FMFZ3Q3AL5hzurX8nPAVLMdZzN6wwwrjqOvOfU4AHkIT1PStNw_PvsygpvpdrUZ3B_bhnRXL8amkwpHXENoom0QZmDvG9jfRbGwUdjTclHP91jznb3bAYN18ALFvvqx2EzIR96rckBZnTsgSdzRG_b3Ra1cI3efTgMjZB6jVelg3QGtHh8wEESYZjapf3hU2QPy-GJw8ZkyJ3FZ8UHpeeyh355JUolIi0sTM" />
@@ -76,19 +52,19 @@
             </section>
 
             <!-- The Philosophy Details -->
-            <section class="mb-32 px-4 py-24 bg-charcoal/50 border-y border-silver/5">
+            <section class="mb-32 px-4 py-24 bg-charcoal/50 border-y border-accent-purple/20">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
                     <div class="flex flex-col gap-6">
                         <span class="material-symbols-outlined text-silver text-4xl font-extralight">diamond</span>
                         <h3 class="text-silver text-2xl vogue-text italic">Uncompromising Sourcing</h3>
-                        <p class="text-silver/60 font-light leading-relaxed font-outfit">We traverse the globe for the
+                        <p class="text-silver/80 font-light leading-relaxed font-outfit">We traverse the globe for the
                             rarest raw materials, harvesting only at their peak olfactory resonance.</p>
                     </div>
                     <div class="flex flex-col gap-6 md:mt-12">
                         <span
                             class="material-symbols-outlined text-silver text-4xl font-extralight">travel_explore</span>
                         <h3 class="text-silver text-2xl vogue-text italic">Curated Excellence</h3>
-                        <p class="text-silver/60 font-light leading-relaxed font-outfit">We partner with the world's
+                        <p class="text-silver/80 font-light leading-relaxed font-outfit">We partner with the world's
                             most exclusive olfactory houses, bringing their masterfully crafted narratives directly to
                             your collection.
                         </p>
@@ -97,7 +73,7 @@
                         <span
                             class="material-symbols-outlined text-silver text-4xl font-extralight">workspace_premium</span>
                         <h3 class="text-silver text-2xl vogue-text italic">The Collector's Flacon</h3>
-                        <p class="text-silver/60 font-light leading-relaxed font-outfit">Housed in weighty, brutalist
+                        <p class="text-silver/80 font-light leading-relaxed font-outfit">Housed in weighty, brutalist
                             glass adorned with brushed silver. Designed not just to hold scent, but to endure as
                             architecture.</p>
                     </div>
@@ -109,7 +85,7 @@
                 class="py-20 text-center flex flex-col items-center justify-center border-b border-slate-800 pb-40">
                 <span class="material-symbols-outlined text-silver/50 text-5xl mb-8">water_drop</span>
                 <h2 class="vogue-text text-5xl md:text-7xl text-silver italic mb-8">Discover the Essence</h2>
-                <p class="text-silver/60 font-outfit font-light max-w-lg mb-12">
+                <p class="text-silver/80 font-outfit font-light max-w-lg mb-12">
                     Step into our curated gallery of olfactory architecture. Each flacon houses a narrative waiting to
                     unfold on the skin.
                 </p>
@@ -120,40 +96,6 @@
                         class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform">arrow_forward</span>
                 </a>
             </section>
-
-            <!-- Footer Section -->
-            <footer
-                class="mt-48 pt-20 border-t border-slate-800 flex flex-col md:flex-row justify-between items-start gap-12 text-slate-500 font-outfit font-light text-sm relative">
-                <div class="max-w-xs">
-                    <div class="flex items-center gap-2 text-slate-200 mb-6">
-                        <img src="assets/logo.png" alt="A&H Logo"
-                            class="h-6 object-contain mix-blend-screen opacity-90" />
-                    </div>
-                    <p class="leading-relaxed">Crafting olfactory architecture.</p>
-                </div>
-                <div class="grid grid-cols-2 lg:grid-cols-3 gap-16 uppercase tracking-widest text-[10px]">
-                    <div class="flex flex-col gap-4">
-                        <h4 class="text-slate-300 font-medium">Explore</h4>
-                        <a class="hover:text-silver transition-colors" href="#">Archive</a>
-                        <a class="hover:text-silver transition-colors" href="#">Sustainability</a>
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        <h4 class="text-slate-300 font-medium">Connect</h4>
-                        <a class="hover:text-silver transition-colors" href="#">Journal</a>
-                        <a class="hover:text-silver transition-colors" href="#">Contact</a>
-                    </div>
-                    <div class="flex flex-col gap-4">
-                        <h4 class="text-slate-300 font-medium">Legal</h4>
-                        <a class="hover:text-silver transition-colors" href="#">Privacy</a>
-                        <a class="hover:text-silver transition-colors" href="#">Terms</a>
-                    </div>
-                </div>
-            </footer>
-
-            <div class="mt-16 text-center py-8">
-                <p class="text-[10px] uppercase tracking-[0.5em] text-slate-700">© 2026 Adagioz & Harmonie. All Rights
-                    Reserved.</p>
-            </div>
 
         </main>
     </div>
