@@ -62,6 +62,12 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
 
                         if (isPlatformBrowser(this.platformId)) {
                             setTimeout(() => {
+                                if (document.querySelector('.gsap-header')) {
+                                    gsap.fromTo('.gsap-header',
+                                        { y: 30, opacity: 0 },
+                                        { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out' }
+                                    );
+                                }
                                 ScrollTrigger.refresh();
                                 this.initScrollAnimations();
                             }, 100);
@@ -76,12 +82,7 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        if (isPlatformBrowser(this.platformId)) {
-            gsap.fromTo('.gsap-header',
-                { y: 30, opacity: 0 },
-                { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out' }
-            );
-        }
+        // Animations are deferred to after data loads (see ngOnInit)
     }
 
     private initScrollAnimations() {

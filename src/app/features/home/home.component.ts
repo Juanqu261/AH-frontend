@@ -45,6 +45,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.spottedProduct.set(matched);
           }
           this.heroLoaded.set(true);
+
+          // Run hero animations after Angular renders the @if block
+          if (matched && isPlatformBrowser(this.platformId)) {
+            setTimeout(() => this.initHeroAnimations(), 50);
+          }
         },
         error: () => {
           this.heroLoaded.set(true);
@@ -55,7 +60,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
-      this.initHeroAnimations();
       this.initScrollAnimations();
     }
   }
@@ -63,25 +67,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private initHeroAnimations() {
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-    tl.fromTo('.gsap-hero-title',
-      { y: 40, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.5, stagger: 0.2 }
-    )
-      .fromTo('.gsap-hero-text',
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2 },
-        "-=1.0"
-      )
-      .fromTo('.gsap-hero-cta',
+    if (document.querySelector('.gsap-hero-title')) {
+      tl.fromTo('.gsap-hero-title',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.5, stagger: 0.2 }
+      );
+    }
+    if (document.querySelector('.gsap-hero-cta')) {
+      tl.fromTo('.gsap-hero-cta',
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 1 },
         "-=0.8"
-      )
-      .fromTo('.gsap-hero-image',
+      );
+    }
+    if (document.querySelector('.gsap-hero-image')) {
+      tl.fromTo('.gsap-hero-image',
         { scale: 0.95, opacity: 0 },
         { scale: 1, opacity: 1, duration: 2, ease: 'power2.out' },
         "-=1.2"
       );
+    }
   }
 
   private initScrollAnimations() {
