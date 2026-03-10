@@ -4,6 +4,12 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from '../../shared/components/footer/footer.component';
 
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register ScrollTrigger plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 @Component({
   selector: 'app-home',
@@ -18,6 +24,7 @@ export class HomeComponent implements AfterViewInit {
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.initHeroAnimations();
+      this.initScrollAnimations();
     }
   }
 
@@ -43,5 +50,25 @@ export class HomeComponent implements AfterViewInit {
         { scale: 1, opacity: 1, duration: 2, ease: 'power2.out' },
         "-=1.2"
       );
+  }
+
+  private initScrollAnimations() {
+    const journalItems = gsap.utils.toArray('.gsap-journal-item');
+    journalItems.forEach((item: any, i) => {
+      gsap.fromTo(item,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.5,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: item,
+            start: "top 85%", // Trigger animation when top of element hits 85% of screen height
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    });
   }
 }
