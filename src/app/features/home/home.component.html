@@ -8,31 +8,29 @@
 
     <div class="layout-container flex h-full grow flex-col">
         <!-- Navigation -->
-        <main class="flex-1 max-w-[1400px] mx-auto px-6 lg:px-20 py-16 z-10 w-full relative">
+        <main class="flex-1 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-20 py-8 sm:py-16 z-10 w-full relative">
 
             <!-- HERO SECTION (GSAP Targets) -->
-            <section class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-44 mt-10 items-center">
+            @if (heroLoaded() && spottedProduct(); as spotted) {
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 mb-24 md:mb-44 mt-6 md:mt-10 items-center">
                 <!-- Text Content -->
                 <div class="order-2 lg:order-1 relative z-20">
-                    <span class="gsap-hero-title text-silver tracking-[0.4em] uppercase text-xs mb-4 block">The
-                        Avant-Garde Collection</span>
+                    <span class="gsap-hero-title text-silver tracking-[0.4em] uppercase text-xs mb-4 block">Featured
+                        Selection</span>
 
-                    <h1 class="gsap-hero-title vogue-text text-6xl md:text-[140px] text-silver mb-8 leading-none">
-                        Flacon <br /><span class="ml-0 lg:ml-24">Brut</span>
+                    <h1
+                        class="gsap-hero-title vogue-text text-5xl sm:text-6xl md:text-[100px] lg:text-[140px] text-silver mb-6 md:mb-8 leading-none">
+                        {{ spotted.name }}
                     </h1>
 
-                    <p
-                        class="gsap-hero-text text-silver/90 font-outfit font-light text-lg max-w-md mb-10 leading-relaxed pl-4 border-l-2 border-accent-purple">
-                        A raw dialogue between earth and atmosphere. Structured for the bold, scented for the poetic.
-                    </p>
-
                     <div class="gsap-hero-cta flex items-center gap-8">
-                        <a routerLink="/catalog"
+                        <a [routerLink]="['/products', formatNameForUrl(spotted.name)]"
                             class="px-10 py-4 bg-silver text-charcoal text-sm font-bold uppercase tracking-[0.2em] hover:bg-white transition-all">
-                            Explore Collection
+                            Discover
                         </a>
-                        <a class="text-silver text-xs font-bold uppercase tracking-[0.2em] border-b border-silver/50 pb-1"
-                            href="#">Our Process</a>
+                        <a routerLink="/catalog"
+                            class="text-silver text-xs font-bold uppercase tracking-[0.2em] border-b border-silver/50 pb-1">Browse
+                            Catalog</a>
                     </div>
                 </div>
 
@@ -40,29 +38,32 @@
                 <div class="order-1 lg:order-2 relative gsap-hero-image">
                     <div
                         class="aspect-[4/5] max-h-[70vh] w-full lg:w-[85%] ml-auto rounded-sm overflow-hidden silver-border p-1 bg-charcoal/40 group relative">
-                        <img alt="Luxury perfume bottle"
+                        <img [alt]="spotted.name"
                             class="w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 transition-transform duration-700"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUXxEdVoRPXX0tYyUVnp1uo8ImCCgUgXxtZrRp-1D8FMFZ3Q3AL5hzurX8nPAVLMdZzN6wwwrjqOvOfU4AHkIT1PStNw_PvsygpvpdrUZ3B_bhnRXL8amkwpHXENoom0QZmDvG9jfRbGwUdjTclHP91jznb3bAYN18ALFvvqx2EzIR96rckBZnTsgSdzRG_b3Ra1cI3efTgMjZB6jVelg3QGtHh8wEESYZjapf3hU2QPy-GJw8ZkyJ3FZ8UHpeeyh355JUolIi0sTM" />
+                            [src]="(spotted.images && spotted.images.length > 0 && spotted.images[0].url) ? spotted.images[0].url : 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2787&auto=format&fit=crop'" />
                         <div
                             class="absolute bottom-0 left-0 p-8 bg-charcoal/80 backdrop-blur-sm border-t border-r border-silver/20">
-                            <span class="text-silver text-[40px] vogue-text italic">01</span>
+                            <span class="font-outfit font-light text-silver text-2xl">{{ (spotted.priceCents / 100) |
+                                currency:'USD' }}</span>
                         </div>
                     </div>
                 </div>
             </section>
+            }
 
             <!-- The Philosophy Details -->
-            <section class="mb-32 px-4 py-24 bg-charcoal/50 border-y border-accent-purple/20">
+            <section class="mb-16 px-4 py-24 bg-accent-purple/10 border-y border-accent-purple/30">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
                     <div class="flex flex-col gap-6">
-                        <span class="material-symbols-outlined text-silver text-4xl font-extralight">diamond</span>
+                        <span
+                            class="material-symbols-outlined text-accent-purple text-4xl font-extralight">diamond</span>
                         <h3 class="text-silver text-2xl vogue-text italic">Uncompromising Sourcing</h3>
                         <p class="text-silver/80 font-light leading-relaxed font-outfit">We traverse the globe for the
                             rarest raw materials, harvesting only at their peak olfactory resonance.</p>
                     </div>
                     <div class="flex flex-col gap-6 md:mt-12">
                         <span
-                            class="material-symbols-outlined text-silver text-4xl font-extralight">travel_explore</span>
+                            class="material-symbols-outlined text-accent-purple text-4xl font-extralight">travel_explore</span>
                         <h3 class="text-silver text-2xl vogue-text italic">Curated Excellence</h3>
                         <p class="text-silver/80 font-light leading-relaxed font-outfit">We partner with the world's
                             most exclusive olfactory houses, bringing their masterfully crafted narratives directly to
@@ -71,7 +72,7 @@
                     </div>
                     <div class="flex flex-col gap-6 md:mt-24">
                         <span
-                            class="material-symbols-outlined text-silver text-4xl font-extralight">workspace_premium</span>
+                            class="material-symbols-outlined text-accent-purple text-4xl font-extralight">workspace_premium</span>
                         <h3 class="text-silver text-2xl vogue-text italic">The Collector's Flacon</h3>
                         <p class="text-silver/80 font-light leading-relaxed font-outfit">Housed in weighty, brutalist
                             glass adorned with brushed silver. Designed not just to hold scent, but to endure as
@@ -113,7 +114,7 @@
                                 class="material-symbols-outlined text-silver text-6xl shadow-xl drop-shadow-2xl">play_circle</span>
                         </div>
                         <div
-                            class="absolute bottom-0 left-0 p-6 w-full bg-gradient-to-t from-charcoal/90 to-transparent transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                            class="absolute bottom-0 left-0 p-6 w-full bg-gradient-to-t from-[#2B1B3D]/90 to-transparent transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
                             <p class="text-silver font-outfit text-sm font-light">The architecture of scent:
                                 Distillation.</p>
                         </div>
@@ -126,7 +127,7 @@
                             alt="Raw materials"
                             class="w-full h-full object-cover opacity-60 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700 grayscale">
                         <div
-                            class="absolute bottom-0 left-0 p-6 w-full bg-gradient-to-t from-charcoal/90 to-transparent transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                            class="absolute bottom-0 left-0 p-6 w-full bg-gradient-to-t from-[#2B1B3D]/90 to-transparent transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
                             <p class="text-silver font-outfit text-sm font-light">Vetiver roots, cured under the
                                 Indonesian sun.</p>
                         </div>
@@ -139,7 +140,7 @@
                             alt="Flacon Brut"
                             class="w-full h-full object-cover opacity-60 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700 grayscale">
                         <div
-                            class="absolute bottom-0 left-0 p-6 w-full bg-gradient-to-t from-charcoal/90 to-transparent transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                            class="absolute bottom-0 left-0 p-6 w-full bg-gradient-to-t from-[#2B1B3D]/90 to-transparent transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
                             <p class="text-silver font-outfit text-sm font-light">Weight. Brutality. Silver.</p>
                         </div>
                     </div>
@@ -148,8 +149,8 @@
 
             <!-- CATALOG CALL TO ACTION -->
             <section
-                class="py-20 text-center flex flex-col items-center justify-center border-b border-slate-800 pb-40">
-                <span class="material-symbols-outlined text-silver/50 text-5xl mb-8">water_drop</span>
+                class="py-20 text-center flex flex-col items-center justify-center border-b border-accent-purple/30 pb-40">
+                <span class="material-symbols-outlined text-accent-purple text-5xl mb-8">water_drop</span>
                 <h2 class="vogue-text text-5xl md:text-7xl text-silver italic mb-8">Discover the Essence</h2>
                 <p class="text-silver/80 font-outfit font-light max-w-lg mb-12">
                     Step into our curated gallery of olfactory architecture. Each flacon houses a narrative waiting to

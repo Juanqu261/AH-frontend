@@ -1,9 +1,10 @@
-import { Component, OnInit, inject, PLATFORM_ID, ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
-import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
+import { Component, OnInit, inject, PLATFORM_ID, AfterViewInit, signal } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { SiteConfigService } from '../../../core/services/site-config.service';
 import { ProductService } from '../../../core/services/product.service';
+import { CollectionConfig } from '../../../core/models/site-config.model';
 import { Product, PaginatedResponse } from '../../../core/models/product.model';
-import { environment } from '../../../../environments/environment';
-import { RouterModule, ActivatedRoute } from '@angular/router';
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -12,45 +13,52 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+interface CollectionCard extends CollectionConfig {
+  previewImages: string[];
+}
+
 @Component({
   selector: 'app-collection-list',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  providers: [CurrencyPipe],
   templateUrl: './collection-list.component.html',
   styleUrls: ['./collection-list.component.scss']
 })
 export class CollectionListComponent implements OnInit, AfterViewInit {
+  private siteConfigService = inject(SiteConfigService);
   private productService = inject(ProductService);
-  private route = inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
 
-  products: Product[] = [];
-  pageTitle = 'The Collection';
-  shopifyBaseUrl = environment.shopifyBaseUrl;
-
-  @ViewChildren('productCard') productCards!: QueryList<ElementRef>;
+  collections = signal<CollectionCard[]>([]);
 
   ngOnInit() {
-    this.route.url.subscribe(url => {
-      const path = url[0]?.path;
-      if (path === 'collections') {
-        this.pageTitle = 'Curated Collections';
-      } else {
-        this.pageTitle = 'The Catalog';
-      }
-    });
+    this.siteConfigService.loadConfig().then(() => {
+      const configs = this.siteConfigService.collections();
 
-    // Fetch products
-    this.productService.getProducts(0, 50).subscribe((response: PaginatedResponse<Product>) => {
-      this.products = response.products;
+      this.productService.getProducts(0, 100).subscribe({
+        next: (response: PaginatedResponse<Product>) => {
+          const cards: CollectionCard[] = configs.map(col => {
+            const matchedProducts = response.products.filter(p =>
+              col.products.includes(this.formatNameForUrl(p.name))
+            );
+            const previewImages = matchedProducts
+              .filter(p => p.images && p.images.length > 0 && p.images[0].url)
+              .map(p => p.images[0].url)
+              .slice(0, 3);
 
-      if (isPlatformBrowser(this.platformId)) {
-        setTimeout(() => {
-          ScrollTrigger.refresh();
-          this.initScrollAnimations();
-        }, 100);
-      }
+            return { ...col, previewImages };
+          });
+
+          this.collections.set(cards);
+
+          if (isPlatformBrowser(this.platformId)) {
+            setTimeout(() => {
+              ScrollTrigger.refresh();
+              this.initScrollAnimations();
+            }, 100);
+          }
+        }
+      });
     });
   }
 
@@ -64,10 +72,9 @@ export class CollectionListComponent implements OnInit, AfterViewInit {
   }
 
   private initScrollAnimations() {
-    if (!this.productCards || this.productCards.length === 0) return;
-
-    this.productCards.forEach((card, index) => {
-      gsap.fromTo(card.nativeElement,
+    const cards = gsap.utils.toArray('.gsap-collection-card');
+    cards.forEach((card: any) => {
+      gsap.fromTo(card,
         { y: 60, opacity: 0 },
         {
           y: 0,
@@ -75,7 +82,7 @@ export class CollectionListComponent implements OnInit, AfterViewInit {
           duration: 1.2,
           ease: 'power2.out',
           scrollTrigger: {
-            trigger: card.nativeElement,
+            trigger: card,
             start: 'top 85%',
             toggleActions: 'play none none none'
           }
@@ -84,7 +91,6 @@ export class CollectionListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Format the product name to be URL-safe (e.g., 'Obsidian Ash' -> 'obsidian-ash')
   formatNameForUrl(name: string): string {
     if (!name) return '';
     return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');

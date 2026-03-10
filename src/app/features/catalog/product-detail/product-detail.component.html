@@ -1,9 +1,9 @@
-<div class="relative min-h-screen bg-charcoal-gradient overflow-x-hidden pt-12 pb-48 text-silver">
+<div class="relative min-h-screen bg-charcoal-gradient overflow-x-hidden pt-8 sm:pt-12 pb-24 md:pb-48 text-silver">
     <div class="abstract-shape w-[800px] h-[800px] top-20 -right-20"></div>
     <div class="abstract-shape w-[600px] h-[600px] bottom-0 -left-10 opacity-30"></div>
 
 
-    <div class="max-w-[1400px] mx-auto px-6 lg:px-20 relative z-10 w-full mt-2">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-20 relative z-10 w-full mt-2">
 
         <!-- Contextual Navigation -->
         <a routerLink="/catalog"
@@ -24,17 +24,16 @@
 
         <!-- Product Details Layout -->
         @if (!isLoading && product) {
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-24">
 
             <!-- Left Side: Sticky Image (GSAP Target) -->
             <div class="lg:col-span-5 relative">
                 <div class="sticky top-40 gsap-pdp-image">
                     <div
-                        class="aspect-[3/4] max-h-[75vh] overflow-hidden border border-accent-purple/30 hover:border-accent-purple/70 transition-colors duration-500 p-2 bg-charcoal/20">
+                        class="aspect-[3/4] max-h-[50vh] sm:max-h-[60vh] lg:max-h-[75vh] overflow-hidden border border-accent-purple/30 hover:border-accent-purple/70 transition-colors duration-500 p-2 bg-charcoal/20">
                         <!-- Prioritize url over cloudinaryUrl as per user request -->
                         <img [src]="(product.images && product.images.length > 0 && product.images[0].url) ? product.images[0].url : 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2787&auto=format&fit=crop'"
-                            [alt]="product.name"
-                            class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2000ms]" />
+                            [alt]="product.name" class="w-full h-full object-cover transition-all duration-[2000ms]" />
                     </div>
                 </div>
             </div>
@@ -47,7 +46,8 @@
                     <p class="text-silver/80 text-[10px] tracking-[0.3em] uppercase mb-4 font-outfit">
                         Eau de Parfum
                     </p>
-                    <h1 class="vogue-text text-5xl md:text-7xl lg:text-[100px] text-slate-100 italic mb-8 leading-none">
+                    <h1
+                        class="vogue-text text-4xl sm:text-5xl md:text-6xl lg:text-[100px] text-slate-100 italic mb-6 sm:mb-8 leading-none">
                         {{ product.name }}
                     </h1>
                     <p class="font-outfit font-light text-2xl lg:text-3xl text-silver">

@@ -1,61 +1,92 @@
 <div class="relative min-h-screen overflow-x-hidden bg-charcoal-gradient pt-12 pb-48">
+    <!-- Purple accent shapes -->
     <div class="absolute top-0 left-0 w-[800px] h-[800px] accent-shape -z-10 blur-3xl opacity-30"></div>
+    <div class="absolute bottom-0 right-0 w-[600px] h-[600px] accent-shape -z-10 blur-3xl opacity-40"></div>
+    <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] accent-shape -z-10 blur-3xl opacity-20">
+    </div>
 
-    <div class="max-w-[1400px] mx-auto px-6 lg:px-20 relative z-10 w-full">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-20 relative z-10 w-full">
         <!-- Header -->
-        <div class="mb-32 border-b border-accent-purple/40 pb-8">
+        <div class="mb-16 md:mb-24 border-b border-accent-purple/40 pb-8">
             <a routerLink="/"
-                class="inline-flex items-center gap-2 text-silver/50 hover:text-white transition-colors mb-16 text-[10px] tracking-widest uppercase font-outfit cursor-pointer">
+                class="inline-flex items-center gap-2 text-silver/50 hover:text-white transition-colors mb-10 md:mb-16 text-[10px] tracking-widest uppercase font-outfit cursor-pointer">
                 <span class="material-symbols-outlined text-sm">west</span>
                 Return to Homepage
             </a>
-            <div class="gsap-header flex flex-col md:flex-row justify-between items-end">
-                <h1 class="vogue-text text-6xl md:text-[120px] text-silver leading-none">{{ pageTitle }}</h1>
-                <p
-                    class="text-silver/80 text-xs tracking-[0.2em] uppercase max-w-[250px] md:text-right font-outfit mt-8 md:mt-0">
-                    A curation of avant-garde olfactory architecture.
+            <div class="gsap-header flex flex-col gap-4">
+                <span
+                    class="text-accent-purple tracking-[0.4em] uppercase text-[10px] font-bold font-outfit">Explore</span>
+                <h1 class="vogue-text text-5xl sm:text-6xl md:text-[100px] lg:text-[120px] text-silver leading-none">
+                    Curated Collections</h1>
+                <p class="text-silver/60 text-sm font-outfit font-light leading-relaxed max-w-lg mt-4">
+                    Each collection is a narrative, a curated dialogue between raw earth and refined artistry.
+                    Discover the olfactory stories that define us.
                 </p>
             </div>
         </div>
 
-        <!-- The Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-y-24 md:gap-x-12">
+        <!-- Collections Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+            @for (collection of collections(); track collection.slug) {
+            <a [routerLink]="['/collections', collection.slug]"
+                class="gsap-collection-card group block relative overflow-hidden cursor-pointer border border-accent-purple/20 hover:border-accent-purple/60 transition-all duration-700">
 
-            @for (product of products; track product.id; let idx = $index; let isEven = $even) {
-            <!-- Asymmetrical Staggered Product Block -->
-            <div #productCard
-                class="gsap-product-card flex flex-col gap-6 
-                        {{ (idx % 3 === 0) ? 'md:col-span-8' : (idx % 3 === 1) ? 'md:col-span-4 md:mt-40' : 'md:col-span-6 md:col-start-4' }}">
+                <!-- Hero Image Area -->
+                <div class="relative aspect-[3/2] sm:aspect-[4/3] overflow-hidden bg-charcoal">
+                    @if (collection.previewImages.length > 0) {
+                    <img [src]="collection.previewImages[0]" [alt]="collection.name"
+                        class="w-full h-full object-cover opacity-70 group-hover:opacity-50 group-hover:scale-105 transition-all duration-1000 grayscale group-hover:grayscale-0" />
+                    } @else {
+                    <div class="w-full h-full bg-accent-purple/20"></div>
+                    }
 
-                <a [routerLink]="['/products', formatNameForUrl(product.name)]"
-                    class="block aspect-[4/5] max-h-[60vh] overflow-hidden group border border-silver/10 p-1 bg-charcoal/20">
-                    <img [src]="(product.images && product.images.length > 0 && product.images[0].url) ? product.images[0].url : 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2787&auto=format&fit=crop'"
-                        [alt]="product.name"
-                        class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100 cursor-pointer" />
-                </a>
-
-                <div class="flex justify-between items-start pt-4 border-t border-slate-800">
-                    <div>
-                        <h3 class="font-serif text-3xl text-slate-100 vogue-text italic">
-                            <a [routerLink]="['/products', formatNameForUrl(product.name)]">{{ product.name }}</a>
-                        </h3>
-                        <p class="text-silver/80 text-xs font-outfit tracking-widest mt-2 uppercase">EAU DE PARFUM</p>
+                    <!-- Purple gradient overlay from bottom -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-[#2B1B3D] via-[#2B1B3D]/60 to-transparent opacity-90">
                     </div>
-                    <div class="flex flex-col items-end gap-2">
-                        <p class="font-outfit font-light text-silver text-xl">{{ (product.priceCents / 100) |
-                            currency:'USD' }}</p>
-                        <a [routerLink]="['/products', formatNameForUrl(product.name)]"
-                            class="text-[10px] uppercase tracking-widest text-silver hover:text-white transition-colors flex items-center gap-1 cursor-pointer">
-                            Explore <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
-                        </a>
+
+                    <!-- Content overlay -->
+                    <div class="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 md:p-10">
+
+                        <!-- Badge -->
+                        <div class="mb-3">
+                            <span
+                                class="inline-flex items-center gap-1 px-3 py-1 bg-accent-purple/60 border border-silver/20 text-silver text-[10px] tracking-[0.2em] uppercase font-outfit backdrop-blur-sm">
+                                <span class="material-symbols-outlined text-[12px]">local_florist</span>
+                                {{ collection.products.length }} {{ collection.products.length === 1 ? 'Fragrance' :
+                                'Fragrances' }}
+                            </span>
+                        </div>
+
+                        <!-- Title -->
+                        <h2
+                            class="vogue-text text-3xl sm:text-4xl md:text-5xl text-white mb-3 group-hover:text-silver transition-colors duration-300">
+                            {{ collection.name }}
+                        </h2>
+
+                        <!-- Description -->
+                        <p
+                            class="text-silver/80 font-outfit font-light leading-relaxed mb-4 max-w-sm text-xs sm:text-sm">
+                            {{ collection.description }}
+                        </p>
+
+                        <!-- Explore CTA -->
+                        <div
+                            class="flex items-center gap-2 text-silver text-[10px] tracking-widest uppercase font-outfit font-bold group-hover:gap-4 transition-all duration-500">
+                            <span>Explore Collection</span>
+                            <span
+                                class="material-symbols-outlined text-sm transform group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
             } @empty {
-            <div class="col-span-12 flex flex-col items-center justify-center py-40 border border-silver/10">
-                <span class="material-symbols-outlined text-silver text-4xl mb-4">hourglass_empty</span>
-                <p class="text-center text-silver font-outfit font-light tracking-widest uppercase">The collection is
-                    currently resting.</p>
+            <div
+                class="col-span-1 md:col-span-2 flex flex-col items-center justify-center py-24 md:py-40 border border-accent-purple/20">
+                <span class="material-symbols-outlined text-accent-purple text-4xl mb-4">hourglass_empty</span>
+                <p class="text-center text-silver font-outfit font-light tracking-widest uppercase">No collections
+                    available.</p>
             </div>
             }
         </div>

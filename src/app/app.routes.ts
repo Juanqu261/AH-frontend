@@ -6,7 +6,18 @@ import { ProductDetailComponent } from './features/catalog/product-detail/produc
 export const routes: Routes = [
     { path: '', component: HomeComponent, title: 'Adagioz & Harmonie' },
     { path: 'collections', component: CollectionListComponent, title: 'Collections | Adagioz & Harmonie' },
-    { path: 'catalog', component: CollectionListComponent, title: 'Catalog | Adagioz & Harmonie' },
+    {
+        path: 'collections/:slug',
+        loadComponent: () =>
+            import('./features/catalog/collection-detail/collection-detail.component').then(m => m.CollectionDetailComponent),
+        title: 'Collection | Adagioz & Harmonie'
+    },
+    {
+        path: 'catalog',
+        loadComponent: () =>
+            import('./features/catalog/catalog/catalog.component').then(m => m.CatalogComponent),
+        title: 'Catalog | Adagioz & Harmonie'
+    },
     { path: 'products/:name', component: ProductDetailComponent, title: 'Product Details | Adagioz & Harmonie' },
     {
         path: 'privacy',
