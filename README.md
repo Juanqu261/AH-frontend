@@ -9,7 +9,7 @@ Key design pillars include:
 
 *   **Color Protocol (60-30-10 Dark Mode)**:
     *   **60% Charcoal Foundation**: `#121212` / `#1A1A1A` for deep, mysterious backgrounds.
-    *   **30% Deep Purple**: `#2B1B3D` for subtle, abstract organic shapes and visual depth.
+    *   **30% Deep Purple**: Base `#2B1B3D`, Glow `#4A2D6B`, Light `#6B3FA0` — used for backgrounds, borders, and icons respectively.
     *   **10% Brushed Silver**: `#E5E4E2` for sharp, architectural text styling and structural accents.
 *   **Typography**: A mix of *Cormorant Garamond* (massive, italicized headers) and *Outfit* (clean, legible body copy).
 *   **Animations**: Powered by **GSAP** (GreenSock) and ScrollTrigger to deliver slow, elegant cinematic fade-ins and staggered scroll reveals.
