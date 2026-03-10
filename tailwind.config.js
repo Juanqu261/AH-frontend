@@ -11,6 +11,8 @@ module.exports = {
                 'silver': '#E5E4E2',
                 'charcoal': '#121212',
                 'accent-purple': '#2B1B3D',
+                'accent-purple-light': '#6B3FA0',
+                'accent-purple-glow': '#4A2D6B',
                 'background-dark': '#121212',
             },
             fontFamily: {

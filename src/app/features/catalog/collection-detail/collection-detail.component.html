@@ -6,7 +6,8 @@
     <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-20 relative z-10 w-full">
         <!-- Header -->
         @if (collection(); as col) {
-        <div class="mb-16 md:mb-32 border-b border-accent-purple/40 pb-8">
+        <div class="mb-16 md:mb-32 pb-8">
+            <div class="section-divider-purple mb-8"></div>
             <a routerLink="/collections"
                 class="inline-flex items-center gap-2 text-silver/50 hover:text-white transition-colors mb-10 md:mb-16 text-[10px] tracking-widest uppercase font-outfit cursor-pointer">
                 <span class="material-symbols-outlined text-sm">west</span>
@@ -14,7 +15,7 @@
             </a>
             <div class="gsap-header flex flex-col gap-6">
                 <span
-                    class="inline-flex items-center gap-1 px-3 py-1 bg-accent-purple/40 border border-accent-purple/60 text-silver text-[10px] tracking-[0.2em] uppercase font-outfit mb-4 backdrop-blur-sm">
+                    class="inline-flex items-center gap-1 px-3 py-1 bg-accent-purple-glow/40 border border-accent-purple-light/30 text-silver text-[10px] tracking-[0.2em] uppercase font-outfit mb-4 backdrop-blur-sm">
                     <span class="material-symbols-outlined text-[12px]">local_florist</span>
                     Collection
                 </span>
@@ -27,14 +28,14 @@
         </div>
 
         <!-- The Product Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-y-24 md:gap-x-12">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-y-24 md:gap-x-12 section-glow relative">
             @for (product of products(); track product.id; let idx = $index) {
             <div #productCard
                 class="gsap-product-card flex flex-col gap-4 sm:gap-6 
                         {{ (idx % 3 === 0) ? 'md:col-span-8' : (idx % 3 === 1) ? 'md:col-span-4 md:mt-40' : 'md:col-span-6 md:col-start-4' }}">
 
                 <a [routerLink]="['/products', formatNameForUrl(product.name)]"
-                    class="block aspect-[3/4] sm:aspect-[4/5] max-h-[50vh] md:max-h-[60vh] overflow-hidden group border border-silver/10 p-1 bg-charcoal/20">
+                    class="block aspect-[3/4] sm:aspect-[4/5] max-h-[50vh] md:max-h-[60vh] overflow-hidden group border border-accent-purple-glow/20 hover:border-accent-purple-light/40 p-1 bg-charcoal/20 transition-colors duration-500">
                     <img [src]="(product.images && product.images.length > 0 && product.images[0].url) ? product.images[0].url : 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2787&auto=format&fit=crop'"
                         [alt]="product.name"
                         class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100 cursor-pointer" />

@@ -8,7 +8,8 @@
 
     <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-20 relative z-10 w-full">
         <!-- Header -->
-        <div class="mb-16 md:mb-24 border-b border-accent-purple/40 pb-8">
+        <div class="mb-16 md:mb-24 pb-8">
+            <div class="section-divider-purple mb-8"></div>
             <a routerLink="/"
                 class="inline-flex items-center gap-2 text-silver/50 hover:text-white transition-colors mb-10 md:mb-16 text-[10px] tracking-widest uppercase font-outfit cursor-pointer">
                 <span class="material-symbols-outlined text-sm">west</span>
@@ -16,7 +17,7 @@
             </a>
             <div class="gsap-header flex flex-col gap-4">
                 <span
-                    class="text-accent-purple tracking-[0.4em] uppercase text-[10px] font-bold font-outfit">Explore</span>
+                    class="text-accent-purple-light tracking-[0.4em] uppercase text-[10px] font-bold font-outfit">Explore</span>
                 <h1 class="vogue-text text-5xl sm:text-6xl md:text-[100px] lg:text-[120px] text-silver leading-none">
                     Curated Collections</h1>
                 <p class="text-silver/60 text-sm font-outfit font-light leading-relaxed max-w-lg mt-4">
@@ -30,7 +31,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
             @for (collection of collections(); track collection.slug) {
             <a [routerLink]="['/collections', collection.slug]"
-                class="gsap-collection-card group block relative overflow-hidden cursor-pointer border border-accent-purple/20 hover:border-accent-purple/60 transition-all duration-700">
+                class="gsap-collection-card group block relative overflow-hidden cursor-pointer border border-accent-purple-glow/30 hover:border-accent-purple-light/50 transition-all duration-700">
 
                 <!-- Hero Image Area -->
                 <div class="relative aspect-[3/2] sm:aspect-[4/3] overflow-hidden bg-charcoal">
@@ -43,7 +44,7 @@
 
                     <!-- Purple gradient overlay from bottom -->
                     <div
-                        class="absolute inset-0 bg-gradient-to-t from-[#2B1B3D] via-[#2B1B3D]/60 to-transparent opacity-90">
+                        class="absolute inset-0 bg-gradient-to-t from-[#4A2D6B] via-[#2B1B3D]/60 to-transparent opacity-90">
                     </div>
 
                     <!-- Content overlay -->
@@ -52,7 +53,7 @@
                         <!-- Badge -->
                         <div class="mb-3">
                             <span
-                                class="inline-flex items-center gap-1 px-3 py-1 bg-accent-purple/60 border border-silver/20 text-silver text-[10px] tracking-[0.2em] uppercase font-outfit backdrop-blur-sm">
+                                class="inline-flex items-center gap-1 px-3 py-1 bg-accent-purple-glow/60 border border-accent-purple-light/30 text-silver text-[10px] tracking-[0.2em] uppercase font-outfit backdrop-blur-sm">
                                 <span class="material-symbols-outlined text-[12px]">local_florist</span>
                                 {{ collection.products.length }} {{ collection.products.length === 1 ? 'Fragrance' :
                                 'Fragrances' }}
@@ -84,7 +85,7 @@
             } @empty {
             <div
                 class="col-span-1 md:col-span-2 flex flex-col items-center justify-center py-24 md:py-40 border border-accent-purple/20">
-                <span class="material-symbols-outlined text-accent-purple text-4xl mb-4">hourglass_empty</span>
+                <span class="material-symbols-outlined text-accent-purple-light text-4xl mb-4">hourglass_empty</span>
                 <p class="text-center text-silver font-outfit font-light tracking-widest uppercase">No collections
                     available.</p>
             </div>
