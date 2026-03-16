@@ -1,0 +1,57 @@
+<div class="min-h-screen bg-[#121212] flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 font-sans text-[#E5E4E2]">
+  <div class="w-full max-w-4xl bg-[#1A1A1A] rounded-xl shadow-2xl border border-[#2B1B3D]/30 overflow-hidden">
+    
+    <div class="px-8 py-6 border-b border-[#2B1B3D]/30 flex justify-between items-center bg-[#151515]">
+      <div>
+        <h2 class="text-2xl font-light tracking-widest text-[#E5E4E2]">SITE CONFIGURATION</h2>
+        <p class="text-sm text-gray-400 mt-1 uppercase tracking-wider text-[10px]">Edit the storefront merchandising layout</p>
+      </div>
+      <div 
+        *ngIf="statusMessage().type" 
+        [ngClass]="{
+          'bg-green-900/40 text-green-400 border border-green-800': statusMessage().type === 'success',
+          'bg-red-900/40 text-red-400 border border-red-800': statusMessage().type === 'error',
+          'bg-[#2B1B3D]/40 text-[#A88BCE] border border-[#4A2D6B]': statusMessage().type === 'loading'
+        }"
+        class="px-4 py-2 rounded text-xs tracking-wider transition-all duration-300">
+        {{ statusMessage().text }}
+      </div>
+    </div>
+
+    <div class="p-8 space-y-6">
+      
+      <div class="space-y-4">
+        <label class="block text-xs uppercase tracking-widest text-gray-400">JSON Configuration Editor</label>
+        <textarea 
+          [(ngModel)]="configJson"
+          rows="20"
+          class="w-full bg-[#121212] border border-[#2B1B3D] rounded-lg p-5 font-mono text-sm text-[#E5E4E2] focus:ring-2 focus:ring-[#6B3FA0] focus:border-transparent transition-all duration-300 resize-y"
+          placeholder="Loading config..."
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+      <div class="pt-6 border-t border-[#2B1B3D]/30 flex items-end justify-between gap-6">
+        <div class="flex-1 max-w-sm space-y-4">
+          <label class="block text-xs uppercase tracking-widest text-gray-400">Admin Authorization</label>
+          <div class="relative">
+            <input 
+              type="password" 
+              [(ngModel)]="adminKey"
+              class="w-full bg-[#121212] border border-[#2B1B3D] rounded p-3 text-sm text-[#E5E4E2] focus:ring-2 focus:ring-[#4A2D6B] focus:border-transparent transition-all duration-300 placeholder-gray-600"
+              placeholder="Enter x-admin-key"
+            />
+          </div>
+        </div>
+
+        <button 
+          (click)="saveConfig()"
+          [disabled]="statusMessage().type === 'loading'"
+          class="bg-gradient-to-r from-[#4A2D6B] to-[#2B1B3D] hover:from-[#6B3FA0] hover:to-[#4A2D6B] border border-[#6B3FA0]/30 transition-all duration-300 text-[#E5E4E2] px-8 py-3 rounded text-sm uppercase tracking-[0.2em] shadow-lg shadow-[#2B1B3D]/50 disabled:opacity-50 disabled:cursor-not-allowed">
+          Save Configuration
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>

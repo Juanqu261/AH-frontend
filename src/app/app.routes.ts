@@ -31,6 +31,12 @@ export const routes: Routes = [
             import('./features/legal/terms-of-service/terms-of-service.component').then(m => m.TermsOfServiceComponent),
         title: 'Terms of Service | Adagioz & Harmonie'
     },
+    {
+        path: 'admin/config',
+        loadComponent: () =>
+            import('./features/admin-config/admin-config.component').then(m => m.AdminConfigComponent),
+        title: 'Edit Config | Adagioz & Harmonie'
+    },
     { path: '**', redirectTo: '' }
 ];
 
