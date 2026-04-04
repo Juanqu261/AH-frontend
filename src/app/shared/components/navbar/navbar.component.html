@@ -11,17 +11,9 @@
                 class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors">Collections</a>
             <a routerLink="/catalog"
                 class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors">Catalog</a>
-            <a class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors"
-                href="#">Bespoke</a>
-            <a class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors"
-                href="#">Heritage</a>
         </nav>
     </div>
     <div class="flex items-center gap-4">
-        <a routerLink="/catalog"
-            class="hidden sm:flex min-w-[100px] cursor-pointer items-center justify-center border border-accent-emerald-light/50 px-4 lg:px-6 py-2 bg-transparent text-silver text-xs font-bold uppercase tracking-widest hover:bg-accent-emerald-light/20 transition-all">
-            Shop Now
-        </a>
         <!-- Mobile hamburger -->
         <button class="md:hidden flex flex-col gap-1.5 p-2 text-silver" (click)="toggleMobileMenu()"
             [attr.aria-label]="mobileMenuOpen() ? 'Close menu' : 'Open menu'">
@@ -38,15 +30,5 @@
         class="text-silver text-lg tracking-[0.3em] uppercase font-light hover:text-white transition-colors">Collections</a>
     <a routerLink="/catalog" (click)="closeMobileMenu()"
         class="text-silver text-lg tracking-[0.3em] uppercase font-light hover:text-white transition-colors">Catalog</a>
-    <a href="#" (click)="closeMobileMenu()"
-        class="text-silver/50 text-lg tracking-[0.3em] uppercase font-light">Bespoke</a>
-    <a href="#" (click)="closeMobileMenu()"
-        class="text-silver/50 text-lg tracking-[0.3em] uppercase font-light">Heritage</a>
-    <div class="mt-8 border-t border-accent-emerald-light/30 pt-8">
-        <a routerLink="/catalog" (click)="closeMobileMenu()"
-            class="border border-accent-emerald-light/50 px-8 py-3 text-silver text-xs font-bold uppercase tracking-widest hover:bg-accent-emerald-light/20 transition-all">
-            Shop Now
-        </a>
-    </div>
 </div>
 }
