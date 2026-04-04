@@ -10,14 +10,13 @@
             <a routerLink="/"
                 class="inline-flex items-center gap-2 text-silver/50 hover:text-white transition-colors mb-10 md:mb-16 text-[10px] tracking-widest uppercase font-outfit cursor-pointer">
                 <span class="material-symbols-outlined text-sm">west</span>
-                Return to Homepage
+                Volver al Inicio
             </a>
             <div class="gsap-header flex flex-col md:flex-row justify-between items-end">
-                <h1 class="vogue-text text-5xl sm:text-6xl md:text-[100px] lg:text-[120px] text-silver leading-none">The
-                    Catalog</h1>
+                <h1 class="vogue-text text-5xl sm:text-6xl md:text-[100px] lg:text-[120px] text-silver leading-none">El Catálogo</h1>
                 <p
                     class="text-silver/80 text-xs tracking-[0.2em] uppercase max-w-[250px] md:text-right font-outfit mt-8 md:mt-0">
-                    A curated selection of our finest olfactory architecture.
+                    Una selección curada de nuestra mejor arquitectura olfativa.
                 </p>
             </div>
         </div>
@@ -50,7 +49,7 @@
                             currency:'USD' }}</p>
                         <a [routerLink]="['/products', formatNameForUrl(product.name)]"
                             class="text-[10px] uppercase tracking-widest text-silver hover:text-white transition-colors flex items-center gap-1 cursor-pointer">
-                            Explore <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                            Explorar <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
                         </a>
                     </div>
                 </div>
@@ -58,8 +57,7 @@
             } @empty {
             <div class="col-span-12 flex flex-col items-center justify-center py-40 border border-silver/10">
                 <span class="material-symbols-outlined text-silver text-4xl mb-4">hourglass_empty</span>
-                <p class="text-center text-silver font-outfit font-light tracking-widest uppercase">The catalog is
-                    currently being curated.</p>
+                <p class="text-center text-silver font-outfit font-light tracking-widest uppercase">El catálogo está siendo curado actualmente.</p>
             </div>
             }
         </div>

@@ -9,7 +9,7 @@
         <a routerLink="/catalog"
             class="inline-flex items-center gap-2 text-silver/50 hover:text-white transition-colors mb-12 text-[10px] tracking-widest uppercase font-outfit cursor-pointer">
             <span class="material-symbols-outlined text-sm">west</span>
-            Return to Catalog
+            Volver al Catálogo
         </a>
 
         <!-- Loading State -->
@@ -17,7 +17,7 @@
         <div class="flex h-[60vh] items-center justify-center">
             <div class="animate-pulse flex flex-col items-center">
                 <span class="material-symbols-outlined text-silver/80 text-4xl mb-4">hourglass_top</span>
-                <p class="text-silver/80 tracking-widest uppercase font-outfit text-xs">Summoning Essence...</p>
+                <p class="text-silver/80 tracking-widest uppercase font-outfit text-xs">Invocando Esencia...</p>
             </div>
         </div>
         }
@@ -61,11 +61,9 @@
                 <!-- Description & Details (GSAP Target) -->
                 <div class="gsap-pdp-details flex flex-col gap-12 font-outfit font-light">
                     <div>
-                        <h3 class="text-xs tracking-[0.2em] uppercase text-silver/80 mb-4">The Narrative</h3>
+                        <h3 class="text-xs tracking-[0.2em] uppercase text-silver/80 mb-4">La Narrativa</h3>
                         <p class="text-lg leading-relaxed text-silver/90 max-w-2xl">
-                            {{ product.description || 'An avant-garde exploration of raw materials. This fragrance
-                            suspends tension between dark, earthly roots and ethereal, metallic top notes. Hand-blended
-                            in small batches for the uncompromising collector.' }}
+                            {{ product.description || 'Una exploración vanguardista de materias primas. Esta fragancia suspende la tensión entre oscuras raíces terrenales y etéreas notas de salida metálicas. Mezclado a mano en pequeños lotes para el coleccionista sin compromisos.' }}
                         </p>
                     </div>
 
@@ -73,7 +71,7 @@
                     <div class="mt-8">
                         <h3
                             class="text-xs tracking-[0.2em] uppercase text-silver/80 mb-6 block w-full border-b border-silver/10 pb-4">
-                            Olfactory Structure</h3>
+                            Estructura Olfativa</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <!-- Top Note -->
@@ -81,8 +79,8 @@
                                 class="flex flex-col items-center md:items-start text-center md:text-left p-6 border border-silver/5 bg-charcoal/30 hover:bg-slate-800/20 transition-colors">
                                 <span
                                     class="material-symbols-outlined text-4xl text-silver/80 mb-4 font-extralight">air</span>
-                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Top Notes</h4>
-                                <p class="text-sm font-outfit text-silver">Bergamot, White Pepper, Ash</p>
+                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Notas de Salida</h4>
+                                <p class="text-sm font-outfit text-silver">Bergamota, Pimienta Blanca, Ceniza</p>
                             </div>
 
                             <!-- Heart Note -->
@@ -90,8 +88,8 @@
                                 class="flex flex-col items-center md:items-start text-center md:text-left p-6 border border-silver/5 bg-charcoal/30 hover:bg-slate-800/20 transition-colors">
                                 <span
                                     class="material-symbols-outlined text-4xl text-silver/80 mb-4 font-extralight">spa</span>
-                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Heart Notes</h4>
-                                <p class="text-sm font-outfit text-silver">Iris Root, Burnt Cedar</p>
+                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Notas de Corazón</h4>
+                                <p class="text-sm font-outfit text-silver">Raíz de Iris, Cedro Quemado</p>
                             </div>
 
                             <!-- Base Note -->
@@ -99,8 +97,8 @@
                                 class="flex flex-col items-center md:items-start text-center md:text-left p-6 border border-silver/5 bg-charcoal/30 hover:bg-slate-800/20 transition-colors">
                                 <span
                                     class="material-symbols-outlined text-4xl text-silver/80 mb-4 font-extralight">water_drop</span>
-                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Base Notes</h4>
-                                <p class="text-sm font-outfit text-silver">Dark Oud, Vetiver, Amber</p>
+                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Notas de Fondo</h4>
+                                <p class="text-sm font-outfit text-silver">Oud Oscuro, Vetiver, Ámbar</p>
                             </div>
                         </div>
                     </div>
@@ -111,17 +109,17 @@
 
                 <!-- Outbound Call To Action (Strict 'Catalog Mode' Rule) -->
                 <div class="gsap-pdp-action">
-                    <p class="text-xs tracking-widest text-silver/80 mb-6 uppercase">Acquisition</p>
+                    <p class="text-xs tracking-widest text-silver/80 mb-6 uppercase">Adquisición</p>
                     <!-- Notice this is an anchor tag with an href pointing externally, not an Angular routerLink -->
                     <a [href]="getOutboundUrl()" target="_blank" rel="noopener noreferrer"
                         class="inline-flex items-center justify-between w-full md:w-auto min-w-[300px] border border-silver px-8 py-5 bg-transparent text-silver hover:bg-silver hover:text-charcoal transition-all duration-500 group">
 
-                        <span class="text-sm font-bold uppercase tracking-[0.2em]">Acquire in Boutique</span>
+                        <span class="text-sm font-bold uppercase tracking-[0.2em]">Adquirir en Boutique</span>
                         <span
                             class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform">arrow_outward</span>
                     </a>
                     <p class="text-[10px] text-silver/60 mt-4 tracking-widest uppercase">
-                        You will be redirected to our secure merchant partner.
+                        Serás redirigido a nuestro socio comercial seguro.
                     </p>
                 </div>
 
@@ -132,13 +130,13 @@
         <!-- Error State -->
         @if (!isLoading && !product) {
         <div class="flex flex-col h-[50vh] items-center justify-center border border-silver/10 p-10 mt-10">
-            <h2 class="vogue-text text-4xl text-silver italic mb-4">Fragrance Not Found</h2>
+            <h2 class="vogue-text text-4xl text-silver italic mb-4">Fragancia No Encontrada</h2>
             <p class="font-outfit font-light text-silver/50 text-center max-w-md mb-8">
-                The requested essence has either been archived or is no longer available in our collection.
+                La esencia solicitada ha sido archivada o ya no está disponible en nuestra colección.
             </p>
             <a routerLink="/catalog"
                 class="border-b border-silver pb-1 text-xs uppercase tracking-widest hover:text-white transition-colors">
-                Return to Catalog
+                Volver al Catálogo
             </a>
         </div>
         }
