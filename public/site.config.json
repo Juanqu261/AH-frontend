@@ -1,0 +1,28 @@
+{
+    "spottedProduct": "chanel-n-5",
+    "catalogRecommendations": [
+        "chanel-n-5",
+        "dior-sauvage-edp"
+    ],
+    "collections": [
+        {
+            "slug": "avant-garde",
+            "name": "The Avant-Garde",
+            "description": "Bold, architectural compositions for the unafraid.",
+            "products": [
+                "sample-mind-games-vieri",
+                "yara-lattafa-pink",
+                "lattafa-fakhar-for-men"
+            ]
+        },
+        {
+            "slug": "heritage",
+            "name": "Heritage",
+            "description": "Timeless silhouettes reinterpreted for the modern collector.",
+            "products": [
+                "club-de-nuit-untold",
+                "lattafa-khamrah-qahwa"
+            ]
+        }
+    ]
+}
