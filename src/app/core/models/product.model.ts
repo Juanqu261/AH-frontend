@@ -18,6 +18,7 @@ export interface ProductVariant {
 export interface Product {
     id: string;
     name: string;
+    shopifyHandle?: string;
     description?: string;
     priceCents: number;
     compareAtPriceCents?: number;

@@ -41,7 +41,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
 
               if (matchedProduct) {
                 this.product = matchedProduct;
-                this.shopifyHandle = this.formatNameForUrl(matchedProduct.name);
+                this.shopifyHandle = matchedProduct.shopifyHandle ?? this.formatNameForUrl(matchedProduct.name);
                 this.isLoading = false;
 
                 if (isPlatformBrowser(this.platformId)) {
