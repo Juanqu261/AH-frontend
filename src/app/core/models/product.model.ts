@@ -23,4 +23,9 @@ export interface Product {
     compareAtPriceCents?: number;
     images: ProductImage[];
     variants?: ProductVariant[];
+    principalNotes?: {
+        top?: string;
+        heart?: string;
+        base?: string;
+    };
 }

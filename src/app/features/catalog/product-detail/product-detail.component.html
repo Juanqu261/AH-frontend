@@ -80,7 +80,7 @@
                                 <span
                                     class="material-symbols-outlined text-4xl text-silver/80 mb-4 font-extralight">air</span>
                                 <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Notas de Salida</h4>
-                                <p class="text-sm font-outfit text-silver">Bergamota, Pimienta Blanca, Ceniza</p>
+                                <p class="text-sm font-outfit text-silver">{{ product.principalNotes?.top || 'Bergamota, Pimienta Blanca, Ceniza' }}</p>
                             </div>
 
                             <!-- Heart Note -->
@@ -89,7 +89,7 @@
                                 <span
                                     class="material-symbols-outlined text-4xl text-silver/80 mb-4 font-extralight">spa</span>
                                 <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Notas de Corazón</h4>
-                                <p class="text-sm font-outfit text-silver">Raíz de Iris, Cedro Quemado</p>
+                                <p class="text-sm font-outfit text-silver">{{ product.principalNotes?.heart || 'Raíz de Iris, Cedro Quemado' }}</p>
                             </div>
 
                             <!-- Base Note -->
@@ -98,7 +98,7 @@
                                 <span
                                     class="material-symbols-outlined text-4xl text-silver/80 mb-4 font-extralight">water_drop</span>
                                 <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Notas de Fondo</h4>
-                                <p class="text-sm font-outfit text-silver">Oud Oscuro, Vetiver, Ámbar</p>
+                                <p class="text-sm font-outfit text-silver">{{ product.principalNotes?.base || 'Oud Oscuro, Vetiver, Ámbar' }}</p>
                             </div>
                         </div>
                     </div>
