@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../core/services/site-config.service';
 import { ProductService } from '../../core/services/product.service';
 import { Product, PaginatedResponse } from '../../core/models/product.model';
+import { formatNameForUrl } from '../../core/utils/slug.util';
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -109,8 +110,5 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  formatNameForUrl(name: string): string {
-    if (!name) return '';
-    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-  }
+  formatNameForUrl = formatNameForUrl;
 }

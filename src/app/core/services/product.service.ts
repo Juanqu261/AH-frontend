@@ -18,6 +18,10 @@ export class ProductService {
     return this.http.get<Product>(`${environment.apiUrl}/products/${id}`);
   }
 
+  getProductByHandle(handle: string): Observable<Product> {
+    return this.http.get<Product>(`${environment.apiUrl}/products/handle/${encodeURIComponent(handle)}`);
+  }
+
   searchProducts(q: string, skip: number, take: number): Observable<PaginatedResponse<Product>> {
     return this.http.get<PaginatedResponse<Product>>(`${environment.apiUrl}/products?q=${q}&skip=${skip}&take=${take}`);
   }

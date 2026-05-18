@@ -3,6 +3,7 @@ import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
 import { Product } from '../../../core/models/product.model';
+import { formatNameForUrl } from '../../../core/utils/slug.util';
 import { environment } from '../../../../environments/environment';
 
 import { gsap } from 'gsap';
@@ -33,32 +34,24 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
       if (nameSlug) {
         this.isLoading = true;
 
-        // Fetch products and manually map the matched slug to avoid backend search lossiness
-        this.productService.getProducts(0, 100).subscribe({
-          next: (response: any) => {
-            if (response.products && response.products.length > 0) {
-              const matchedProduct = response.products.find((p: Product) => this.formatNameForUrl(p.name) === nameSlug);
+        this.productService.getProductByHandle(nameSlug).subscribe({
+          next: (matchedProduct: Product) => {
+            this.product = matchedProduct;
+            this.shopifyHandle = matchedProduct.shopifyHandle ?? this.formatNameForUrl(matchedProduct.name);
+            this.isLoading = false;
 
-              if (matchedProduct) {
-                this.product = matchedProduct;
-                this.shopifyHandle = matchedProduct.shopifyHandle ?? this.formatNameForUrl(matchedProduct.name);
-                this.isLoading = false;
-
-                if (isPlatformBrowser(this.platformId)) {
-                  setTimeout(() => {
-                    this.initEntranceAnimation();
-                  }, 50);
-                }
-              } else {
-                console.warn(`Product not found for slug: ${nameSlug}`);
-                this.isLoading = false;
-              }
-            } else {
-              this.isLoading = false;
+            if (isPlatformBrowser(this.platformId)) {
+              setTimeout(() => {
+                this.initEntranceAnimation();
+              }, 50);
             }
           },
           error: (err) => {
-            console.error("Product fetch failed", err);
+            if (err?.status === 404) {
+              console.warn(`Product not found for slug: ${nameSlug}`);
+            } else {
+              console.error("Product fetch failed", err);
+            }
             this.isLoading = false;
           }
         });
@@ -102,8 +95,5 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
     return `${this.shopifyBaseUrl}${this.shopifyHandle}`;
   }
 
-  formatNameForUrl(name: string): string {
-    if (!name) return '';
-    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-  }
+  formatNameForUrl = formatNameForUrl;
 }
