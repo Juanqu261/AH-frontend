@@ -49,6 +49,26 @@
                     </div>
                 </div>
             </section>
+            } @else if (heroLoaded()) {
+            <!-- Fallback hero when no spotted product is resolved -->
+            <section class="flex flex-col items-center text-center mb-24 md:mb-44 mt-6 md:mt-10 py-16 md:py-24 relative">
+                <span class="gsap-hero-title text-silver tracking-[0.4em] uppercase text-xs mb-6 block">Maison de
+                    Fragancias</span>
+                <h1
+                    class="gsap-hero-title vogue-text text-6xl sm:text-7xl md:text-[120px] lg:text-[160px] text-silver mb-8 leading-none italic">
+                    Adagioz <span class="text-accent-emerald-light">&amp;</span> Harmonie
+                </h1>
+                <p class="text-silver/70 font-outfit font-light max-w-xl mb-12 leading-relaxed">
+                    Una galería curada de arquitectura olfativa. Cada frasco alberga una narrativa que espera
+                    desplegarse sobre la piel.
+                </p>
+                <div class="gsap-hero-cta">
+                    <a routerLink="/catalog"
+                        class="px-10 py-4 bg-silver text-charcoal text-sm font-bold uppercase tracking-[0.2em] hover:bg-white transition-all">
+                        Explorar Catálogo
+                    </a>
+                </div>
+            </section>
             }
 
             <!-- Section divider: hero to philosophy -->
