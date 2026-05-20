@@ -1,57 +1,173 @@
-<div class="min-h-screen bg-[#121212] flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 font-sans text-[#E5E4E2]">
-  <div class="w-full max-w-4xl bg-[#1A1A1A] rounded-xl shadow-2xl border border-[#2B1B3D]/30 overflow-hidden">
-    
-    <div class="px-8 py-6 border-b border-[#2B1B3D]/30 flex justify-between items-center bg-[#151515]">
-      <div>
-        <h2 class="text-2xl font-light tracking-widest text-[#E5E4E2]">SITE CONFIGURATION</h2>
-        <p class="text-sm text-gray-400 mt-1 uppercase tracking-wider text-[10px]">Edit the storefront merchandising layout</p>
-      </div>
-      <div 
-        *ngIf="statusMessage().type" 
-        [ngClass]="{
-          'bg-green-900/40 text-green-400 border border-green-800': statusMessage().type === 'success',
-          'bg-red-900/40 text-red-400 border border-red-800': statusMessage().type === 'error',
-          'bg-[#2B1B3D]/40 text-[#A88BCE] border border-[#4A2D6B]': statusMessage().type === 'loading'
-        }"
-        class="px-4 py-2 rounded text-xs tracking-wider transition-all duration-300">
-        {{ statusMessage().text }}
+<div class="min-h-screen bg-charcoal flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 font-display text-silver">
+  <div class="w-full max-w-5xl bg-[#161616] rounded-xl shadow-2xl border border-white/5 overflow-hidden">
+
+    <div class="px-8 py-6 border-b border-white/5 flex items-center bg-[#131313]">
+      <div class="flex items-center gap-4">
+        <span class="w-1 h-12 bg-gradient-to-b from-accent-emerald-light to-accent-emerald-glow rounded"></span>
+        <div>
+          <h2 class="text-2xl font-light tracking-[0.25em] text-silver">SITE CONFIGURATION</h2>
+          <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-[0.3em]">Storefront merchandising layout</p>
+        </div>
       </div>
     </div>
 
-    <div class="p-8 space-y-6">
-      
-      <div class="space-y-4">
-        <label class="block text-xs uppercase tracking-widest text-gray-400">JSON Configuration Editor</label>
-        <textarea 
-          [(ngModel)]="configJson"
-          rows="20"
-          class="w-full bg-[#121212] border border-[#2B1B3D] rounded-lg p-5 font-mono text-sm text-[#E5E4E2] focus:ring-2 focus:ring-[#6B3FA0] focus:border-transparent transition-all duration-300 resize-y"
-          placeholder="Loading config..."
-          spellcheck="false"
-        ></textarea>
-      </div>
+    <!-- Tabs -->
+    <div class="px-8 pt-4 border-b border-white/5 flex gap-1 bg-[#131313]">
+      <button type="button" (click)="switchTab('editor')"
+              [class]="'px-4 py-2 text-xs uppercase tracking-[0.25em] transition-colors border-b-2 ' +
+                       (activeTab() === 'editor'
+                         ? 'text-silver border-accent-emerald-light'
+                         : 'text-gray-500 border-transparent hover:text-gray-300')">
+        Editor
+      </button>
+      <button type="button" (click)="switchTab('advanced')"
+              [class]="'px-4 py-2 text-xs uppercase tracking-[0.25em] transition-colors border-b-2 ' +
+                       (activeTab() === 'advanced'
+                         ? 'text-silver border-accent-emerald-light'
+                         : 'text-gray-500 border-transparent hover:text-gray-300')">
+        Advanced (JSON)
+      </button>
+    </div>
 
-      <div class="pt-6 border-t border-[#2B1B3D]/30 flex items-end justify-between gap-6">
-        <div class="flex-1 max-w-sm space-y-4">
-          <label class="block text-xs uppercase tracking-widest text-gray-400">Admin Authorization</label>
-          <div class="relative">
-            <input 
-              type="password" 
-              [(ngModel)]="adminKey"
-              class="w-full bg-[#121212] border border-[#2B1B3D] rounded p-3 text-sm text-[#E5E4E2] focus:ring-2 focus:ring-[#4A2D6B] focus:border-transparent transition-all duration-300 placeholder-gray-600"
-              placeholder="Enter x-admin-key"
-            />
+    <div class="p-8 space-y-10">
+
+      <!-- ============ EDITOR TAB ============ -->
+      <ng-container *ngIf="activeTab() === 'editor'">
+
+        <!-- Spotted Product -->
+        <section class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="flex items-center gap-2.5 text-xs uppercase tracking-[0.3em] text-gray-400">
+              <lucide-icon [img]="icons.Star" class="w-4 h-4 text-gray-500"></lucide-icon>
+              Spotted Product
+            </h3>
+            <button type="button" (click)="openSpottedPicker()"
+                    class="flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-silver border border-white/10 hover:border-white/30 hover:bg-white/5 rounded px-3 py-1.5 transition-colors">
+              <lucide-icon [img]="config().spottedProduct ? icons.RefreshCw : icons.Plus" class="w-3.5 h-3.5"></lucide-icon>
+              {{ config().spottedProduct ? 'Change' : 'Select' }}
+            </button>
           </div>
+          <div *ngIf="config().spottedProduct; else noSpotted">
+            <app-product-chip [handle]="config().spottedProduct"
+                              (remove)="clearSpotted()"></app-product-chip>
+          </div>
+          <ng-template #noSpotted>
+            <p class="text-xs text-gray-600 italic">No spotted product selected.</p>
+          </ng-template>
+        </section>
+
+        <!-- Catalog Recommendations -->
+        <section class="space-y-3 pt-8 border-t border-white/5">
+          <div class="flex items-center justify-between">
+            <h3 class="flex items-center gap-2.5 text-xs uppercase tracking-[0.3em] text-gray-400">
+              <lucide-icon [img]="icons.Sparkles" class="w-4 h-4 text-gray-500"></lucide-icon>
+              Catalog Recommendations
+              <span class="text-gray-600 normal-case tracking-normal ml-1 font-mono">{{ config().catalogRecommendations.length }}</span>
+            </h3>
+            <button type="button" (click)="openRecommendationsPicker()"
+                    class="flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-silver border border-white/10 hover:border-white/30 hover:bg-white/5 rounded px-3 py-1.5 transition-colors">
+              <lucide-icon [img]="icons.Settings2" class="w-3.5 h-3.5"></lucide-icon>
+              Manage
+            </button>
+          </div>
+          <div *ngIf="config().catalogRecommendations.length; else noRecs" class="flex flex-wrap gap-2">
+            <app-product-chip *ngFor="let h of config().catalogRecommendations; trackBy: trackByHandle"
+                              [handle]="h"
+                              (remove)="removeRecommendation(h)"></app-product-chip>
+          </div>
+          <ng-template #noRecs>
+            <p class="text-xs text-gray-600 italic">No recommendations selected.</p>
+          </ng-template>
+        </section>
+
+        <!-- Collections -->
+        <section class="space-y-5 pt-8 border-t border-white/5">
+          <div class="flex items-center justify-between">
+            <h3 class="flex items-center gap-2.5 text-xs uppercase tracking-[0.3em] text-gray-400">
+              <lucide-icon [img]="icons.Library" class="w-4 h-4 text-gray-500"></lucide-icon>
+              Collections
+              <span class="text-gray-600 normal-case tracking-normal ml-1 font-mono">{{ config().collections.length }}</span>
+            </h3>
+            <button type="button" (click)="addCollection()"
+                    class="flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-silver border border-white/10 hover:border-white/30 hover:bg-white/5 rounded px-3 py-1.5 transition-colors">
+              <lucide-icon [img]="icons.Plus" class="w-3.5 h-3.5"></lucide-icon>
+              New collection
+            </button>
+          </div>
+          <div *ngIf="config().collections.length; else noCols" class="space-y-3">
+            <app-collection-editor *ngFor="let col of config().collections; let i = index; trackBy: trackByIndex"
+                                   [collection]="col"
+                                   [index]="i"
+                                   [initiallyExpanded]="i === lastAddedIndex()"
+                                   (remove)="removeCollection(i)"></app-collection-editor>
+          </div>
+          <ng-template #noCols>
+            <p class="text-xs text-gray-600 italic">No collections defined.</p>
+          </ng-template>
+        </section>
+
+      </ng-container>
+
+      <!-- ============ ADVANCED TAB ============ -->
+      <ng-container *ngIf="activeTab() === 'advanced'">
+        <div class="space-y-3">
+          <label class="block text-xs uppercase tracking-[0.3em] text-gray-400">Raw JSON Configuration</label>
+          <textarea
+            [ngModel]="configJson()"
+            (ngModelChange)="configJson.set($event); jsonError.set('')"
+            rows="22"
+            class="w-full bg-charcoal border border-white/10 rounded-lg p-5 font-mono text-sm text-silver focus:ring-2 focus:ring-accent-emerald-light/70 focus:border-transparent transition-all duration-300 resize-y"
+            spellcheck="false"></textarea>
+          <p *ngIf="jsonError()" class="text-xs text-red-400">{{ jsonError() }}</p>
+          <p class="text-[10px] text-gray-600 italic">
+            Switching back to the Editor tab will parse and apply these changes.
+          </p>
+        </div>
+      </ng-container>
+
+      <!-- Save row -->
+      <div class="pt-6 border-t border-white/5 flex items-end justify-between gap-6 bg-[#131313] -mx-8 -mb-8 px-8 py-6">
+        <div class="flex-1 max-w-sm space-y-2">
+          <label class="block text-[10px] uppercase tracking-[0.3em] text-gray-400">Admin Authorization</label>
+          <input
+            type="password"
+            [(ngModel)]="adminKey"
+            class="w-full bg-charcoal border border-white/10 rounded p-3 text-sm text-silver focus:ring-2 focus:ring-accent-emerald-light/70 focus:border-transparent transition-all duration-300 placeholder-gray-600"
+            placeholder="Enter x-admin-key" />
         </div>
 
-        <button 
+        <button
+          type="button"
           (click)="saveConfig()"
           [disabled]="statusMessage().type === 'loading'"
-          class="bg-gradient-to-r from-[#4A2D6B] to-[#2B1B3D] hover:from-[#6B3FA0] hover:to-[#4A2D6B] border border-[#6B3FA0]/30 transition-all duration-300 text-[#E5E4E2] px-8 py-3 rounded text-sm uppercase tracking-[0.2em] shadow-lg shadow-[#2B1B3D]/50 disabled:opacity-50 disabled:cursor-not-allowed">
+          class="flex items-center gap-2 bg-gradient-to-r from-accent-emerald-glow to-accent-emerald hover:from-accent-emerald-light hover:to-accent-emerald-glow border border-accent-emerald-light/30 transition-all duration-300 text-silver px-8 py-3 rounded text-sm uppercase tracking-[0.25em] shadow-lg shadow-black/40 disabled:opacity-50 disabled:cursor-not-allowed">
+          <lucide-icon [img]="icons.Save" class="w-4 h-4"></lucide-icon>
           Save Configuration
         </button>
       </div>
-      
+
+    </div>
+  </div>
+
+  <!-- Floating toast: fixed to viewport, always visible -->
+  <div *ngIf="statusMessage().type"
+       class="fixed top-6 right-6 z-50 pointer-events-none"
+       role="status"
+       aria-live="polite">
+    <div
+      [ngClass]="{
+        'bg-emerald-900/90 text-emerald-200 border-emerald-700/70': statusMessage().type === 'success',
+        'bg-red-900/90 text-red-200 border-red-800/70': statusMessage().type === 'error',
+        'bg-[#1a1a1a]/95 text-gray-200 border-white/15': statusMessage().type === 'loading'
+      }"
+      class="flex items-center gap-3 backdrop-blur-md border rounded-lg shadow-2xl shadow-black/60 px-5 py-3 text-sm tracking-wider transition-all duration-300 animate-[slideIn_0.25s_ease-out]">
+      <lucide-icon
+        [img]="statusMessage().type === 'success' ? icons.Check :
+               statusMessage().type === 'error'   ? icons.AlertCircle :
+                                                    icons.Loader2"
+        [ngClass]="{ 'animate-spin': statusMessage().type === 'loading' }"
+        class="w-4 h-4 shrink-0"></lucide-icon>
+      <span>{{ statusMessage().text }}</span>
     </div>
   </div>
 </div>
