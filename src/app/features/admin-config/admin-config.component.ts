@@ -1,8 +1,10 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { ADMIN_KEY_STORAGE } from '../../core/guards/admin.guard';
 
 @Component({
   selector: 'app-admin-config',
@@ -13,12 +15,17 @@ import { environment } from '../../../environments/environment';
 })
 export class AdminConfigComponent implements OnInit {
   private http = inject(HttpClient);
-  
+  private router = inject(Router);
+  private platformId = inject(PLATFORM_ID);
+
   configJson = signal<string>('');
   adminKey = signal<string>('');
   statusMessage = signal<{text: string, type: 'success' | 'error' | 'loading' | null}>({ text: '', type: null });
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.adminKey.set(localStorage.getItem(ADMIN_KEY_STORAGE) ?? '');
+    }
     this.loadCurrentConfig();
   }
 
@@ -62,7 +69,11 @@ export class AdminConfigComponent implements OnInit {
       error: (err) => {
         console.error('Save error:', err);
         if (err.status === 401 || err.status === 403) {
-          this.statusMessage.set({ text: 'Unauthorized: Invalid Admin Key.', type: 'error' });
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.removeItem(ADMIN_KEY_STORAGE);
+          }
+          this.statusMessage.set({ text: 'Unauthorized: Invalid Admin Key. Redirecting…', type: 'error' });
+          setTimeout(() => this.router.navigate(['/']), 1200);
         } else {
           this.statusMessage.set({ text: 'Failed to save configuration. Check server logs.', type: 'error' });
         }

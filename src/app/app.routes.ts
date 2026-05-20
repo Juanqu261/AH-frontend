@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
 import { CollectionListComponent } from './features/catalog/collection-list/collection-list.component';
 import { ProductDetailComponent } from './features/catalog/product-detail/product-detail.component';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, title: 'Adagioz & Harmonie' },
@@ -33,6 +34,7 @@ export const routes: Routes = [
     },
     {
         path: 'admin/config',
+        canActivate: [adminGuard],
         loadComponent: () =>
             import('./features/admin-config/admin-config.component').then(m => m.AdminConfigComponent),
         title: 'Edit Config | Adagioz & Harmonie'
