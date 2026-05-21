@@ -6,6 +6,8 @@ import { ProductService } from '../../../core/services/product.service';
 import { CollectionConfig } from '../../../core/models/site-config.model';
 import { Product, PaginatedResponse } from '../../../core/models/product.model';
 import { formatNameForUrl } from '../../../core/utils/slug.util';
+import { LocaleService } from '../../../core/services/locale.service';
+import { TranslatePipe } from '../../../core/i18n/t.pipe';
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -21,7 +23,7 @@ interface CollectionCard extends CollectionConfig {
 @Component({
   selector: 'app-collection-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './collection-list.component.html',
   styleUrls: ['./collection-list.component.scss']
 })
@@ -29,6 +31,7 @@ export class CollectionListComponent implements OnInit, AfterViewInit {
   private siteConfigService = inject(SiteConfigService);
   private productService = inject(ProductService);
   private platformId = inject(PLATFORM_ID);
+  public locale = inject(LocaleService);
 
   collections = signal<CollectionCard[]>([]);
 

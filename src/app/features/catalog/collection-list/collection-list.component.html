@@ -10,18 +10,18 @@
         <!-- Header -->
         <div class="mb-16 md:mb-24 pb-8">
             <div class="section-divider-emerald mb-8"></div>
-            <a routerLink="/"
+            <a [routerLink]="locale.localized('/')"
                 class="inline-flex items-center gap-2 text-silver/50 hover:text-white transition-colors mb-10 md:mb-16 text-[10px] tracking-widest uppercase font-outfit cursor-pointer">
                 <span class="material-symbols-outlined text-sm">west</span>
-                Volver al Inicio
+                {{ 'collections.back' | t }}
             </a>
             <div class="gsap-header flex flex-col gap-4">
                 <span
-                    class="text-accent-emerald-light tracking-[0.4em] uppercase text-[10px] font-bold font-outfit">Explorar</span>
+                    class="text-accent-emerald-light tracking-[0.4em] uppercase text-[10px] font-bold font-outfit">{{ 'collections.eyebrow' | t }}</span>
                 <h1 class="vogue-text text-5xl sm:text-6xl md:text-[100px] lg:text-[120px] text-silver leading-none">
-                    Colecciones Curadas</h1>
+                    {{ 'collections.title' | t }}</h1>
                 <p class="text-silver/60 text-sm font-outfit font-light leading-relaxed max-w-lg mt-4">
-                    Cada colección es una narrativa, un diálogo curado entre la tierra cruda y el arte refinado. Descubre las historias olfativas que nos definen.
+                    {{ 'collections.intro' | t }}
                 </p>
             </div>
         </div>
@@ -29,7 +29,7 @@
         <!-- Collections Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
             @for (collection of collections(); track collection.slug) {
-            <a [routerLink]="['/collections', collection.slug]"
+            <a [routerLink]="locale.localized('/collections/' + collection.slug)"
                 class="gsap-collection-card group block relative overflow-hidden cursor-pointer border border-accent-emerald-glow/30 hover:border-accent-emerald-light/50 transition-all duration-700">
 
                 <!-- Hero Image Area -->
@@ -54,8 +54,7 @@
                             <span
                                 class="inline-flex items-center gap-1 px-3 py-1 bg-accent-emerald-glow/60 border border-accent-emerald-light/30 text-silver text-[10px] tracking-[0.2em] uppercase font-outfit backdrop-blur-sm">
                                 <span class="material-symbols-outlined text-[12px]">local_florist</span>
-                                {{ collection.products.length }} {{ collection.products.length === 1 ? 'Fragancia' :
-                                'Fragancias' }}
+                                {{ collection.products.length }} {{ collection.products.length === 1 ? ('collections.fragrance.one' | t) : ('collections.fragrance.many' | t) }}
                             </span>
                         </div>
 
@@ -74,7 +73,7 @@
                         <!-- Explore CTA -->
                         <div
                             class="flex items-center gap-2 text-silver text-[10px] tracking-widest uppercase font-outfit font-bold group-hover:gap-4 transition-all duration-500">
-                            <span>Explorar Colección</span>
+                            <span>{{ 'collections.exploreCollection' | t }}</span>
                             <span
                                 class="material-symbols-outlined text-sm transform group-hover:translate-x-1 transition-transform">arrow_forward</span>
                         </div>
@@ -85,7 +84,7 @@
             <div
                 class="col-span-1 md:col-span-2 flex flex-col items-center justify-center py-24 md:py-40 border border-accent-emerald/20">
                 <span class="material-symbols-outlined text-accent-emerald-light text-4xl mb-4">hourglass_empty</span>
-                <p class="text-center text-silver font-outfit font-light tracking-widest uppercase">No hay colecciones disponibles.</p>
+                <p class="text-center text-silver font-outfit font-light tracking-widest uppercase">{{ 'collections.empty' | t }}</p>
             </div>
             }
         </div>

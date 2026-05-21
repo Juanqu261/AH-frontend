@@ -1,10 +1,13 @@
-import { Component, AfterViewInit, inject, PLATFORM_ID, signal, OnInit } from '@angular/core';
+import { Component, AfterViewInit, inject, PLATFORM_ID, signal, OnInit, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../core/services/site-config.service';
 import { ProductService } from '../../core/services/product.service';
 import { Product, PaginatedResponse } from '../../core/models/product.model';
 import { formatNameForUrl } from '../../core/utils/slug.util';
+import { LocaleService } from '../../core/services/locale.service';
+import { TranslatePipe } from '../../core/i18n/t.pipe';
+import { localizedProduct } from '../../core/i18n/product-locale';
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -16,7 +19,7 @@ if (typeof window !== 'undefined') {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslatePipe],
   providers: [CurrencyPipe],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
@@ -25,9 +28,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private platformId = inject(PLATFORM_ID);
   private siteConfigService = inject(SiteConfigService);
   private productService = inject(ProductService);
+  public locale = inject(LocaleService);
 
   spottedProduct = signal<Product | null>(null);
   heroLoaded = signal(false);
+
+  spottedView = computed(() => {
+    const p = this.spottedProduct();
+    return p ? localizedProduct(p, this.locale.lang()) : null;
+  });
 
   ngOnInit() {
     this.siteConfigService.loadConfig().then(() => {

@@ -1,19 +1,34 @@
 <header
     class="flex items-center justify-between whitespace-nowrap border-b border-solid border-accent-emerald-glow/40 px-4 sm:px-6 lg:px-20 py-4 sm:py-6 relative z-50 w-full">
     <div class="flex items-center gap-6 md:gap-12">
-        <a routerLink="/" class="flex items-center gap-3 text-slate-100 cursor-pointer group"
+        <a [routerLink]="locale.localized('/')" class="flex items-center gap-3 text-slate-100 cursor-pointer group"
             (click)="closeMobileMenu()">
             <img src="assets/logo.png" alt="A&H Logo"
                 class="h-7 sm:h-8 md:h-10 object-contain mix-blend-screen opacity-90 transition-opacity duration-300 group-hover:opacity-100" />
         </a>
         <nav class="hidden md:flex items-center gap-6 lg:gap-10">
-            <a routerLink="/collections"
-                class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors">Colecciones</a>
-            <a routerLink="/catalog"
-                class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors">Catálogo</a>
+            <a [routerLink]="locale.localized('/collections')"
+                class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors">{{ 'nav.collections' | t }}</a>
+            <a [routerLink]="locale.localized('/catalog')"
+                class="text-slate-300 hover:text-white text-xs tracking-[0.2em] font-light uppercase transition-colors">{{ 'nav.catalog' | t }}</a>
         </nav>
     </div>
     <div class="flex items-center gap-4">
+        <!-- Language switcher -->
+        <div class="flex items-center gap-2 text-[10px] tracking-[0.25em] font-light uppercase">
+            <a [routerLink]="locale.switchTo('es')"
+                class="transition-colors"
+                [class.text-white]="locale.lang() === 'es'"
+                [class.text-slate-500]="locale.lang() !== 'es'"
+                [class.hover:text-slate-300]="locale.lang() !== 'es'">ES</a>
+            <span class="text-slate-700">|</span>
+            <a [routerLink]="locale.switchTo('en')"
+                class="transition-colors"
+                [class.text-white]="locale.lang() === 'en'"
+                [class.text-slate-500]="locale.lang() !== 'en'"
+                [class.hover:text-slate-300]="locale.lang() !== 'en'">EN</a>
+        </div>
+
         <!-- Mobile hamburger -->
         <button class="md:hidden flex flex-col gap-1.5 p-2 text-silver" (click)="toggleMobileMenu()"
             [attr.aria-label]="mobileMenuOpen() ? 'Close menu' : 'Open menu'">
@@ -26,9 +41,9 @@
 @if (mobileMenuOpen()) {
 <div class="fixed inset-0 z-40 bg-charcoal/98 flex flex-col items-center justify-center gap-8 md:hidden"
     style="background: rgba(18, 18, 18, 0.98);">
-    <a routerLink="/collections" (click)="closeMobileMenu()"
-        class="text-silver text-lg tracking-[0.3em] uppercase font-light hover:text-white transition-colors">Colecciones</a>
-    <a routerLink="/catalog" (click)="closeMobileMenu()"
-        class="text-silver text-lg tracking-[0.3em] uppercase font-light hover:text-white transition-colors">Catálogo</a>
+    <a [routerLink]="locale.localized('/collections')" (click)="closeMobileMenu()"
+        class="text-silver text-lg tracking-[0.3em] uppercase font-light hover:text-white transition-colors">{{ 'nav.collections' | t }}</a>
+    <a [routerLink]="locale.localized('/catalog')" (click)="closeMobileMenu()"
+        class="text-silver text-lg tracking-[0.3em] uppercase font-light hover:text-white transition-colors">{{ 'nav.catalog' | t }}</a>
 </div>
 }

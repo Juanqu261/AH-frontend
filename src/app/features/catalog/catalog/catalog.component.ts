@@ -1,10 +1,13 @@
-import { Component, OnInit, inject, PLATFORM_ID, ViewChildren, QueryList, ElementRef, AfterViewInit, signal } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, ViewChildren, QueryList, ElementRef, AfterViewInit, signal, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../../core/services/site-config.service';
 import { ProductService } from '../../../core/services/product.service';
 import { Product, PaginatedResponse } from '../../../core/models/product.model';
 import { formatNameForUrl } from '../../../core/utils/slug.util';
+import { LocaleService } from '../../../core/services/locale.service';
+import { TranslatePipe } from '../../../core/i18n/t.pipe';
+import { localizedProduct } from '../../../core/i18n/product-locale';
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -16,7 +19,7 @@ if (typeof window !== 'undefined') {
 @Component({
     selector: 'app-catalog',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, TranslatePipe],
     providers: [CurrencyPipe],
     templateUrl: './catalog.component.html',
     styleUrls: ['./catalog.component.scss']
@@ -25,6 +28,11 @@ export class CatalogComponent implements OnInit, AfterViewInit {
     private siteConfigService = inject(SiteConfigService);
     private productService = inject(ProductService);
     private platformId = inject(PLATFORM_ID);
+    public locale = inject(LocaleService);
+
+    productViews = computed(() =>
+        this.products().map(p => ({ raw: p, view: localizedProduct(p, this.locale.lang()) }))
+    );
 
     products = signal<Product[]>([]);
 

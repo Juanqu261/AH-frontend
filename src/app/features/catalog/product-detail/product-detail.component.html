@@ -6,10 +6,10 @@
     <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-20 relative z-10 w-full mt-2">
 
         <!-- Contextual Navigation -->
-        <a routerLink="/catalog"
+        <a [routerLink]="locale.localized('/catalog')"
             class="inline-flex items-center gap-2 text-silver/50 hover:text-white transition-colors mb-12 text-[10px] tracking-widest uppercase font-outfit cursor-pointer">
             <span class="material-symbols-outlined text-sm">west</span>
-            Volver al Catálogo
+            {{ 'product.back' | t }}
         </a>
 
         <!-- Loading State -->
@@ -17,13 +17,13 @@
         <div class="flex h-[60vh] items-center justify-center">
             <div class="animate-pulse flex flex-col items-center">
                 <span class="material-symbols-outlined text-silver/80 text-4xl mb-4">hourglass_top</span>
-                <p class="text-silver/80 tracking-widest uppercase font-outfit text-xs">Invocando Esencia...</p>
+                <p class="text-silver/80 tracking-widest uppercase font-outfit text-xs">{{ 'product.loading' | t }}</p>
             </div>
         </div>
         }
 
         <!-- Product Details Layout -->
-        @if (!isLoading && product) {
+        @if (!isLoading && product && view(); as v) {
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-24">
 
             <!-- Left Side: Sticky Image (GSAP Target) -->
@@ -33,7 +33,7 @@
                         class="aspect-[3/4] max-h-[50vh] sm:max-h-[60vh] lg:max-h-[75vh] overflow-hidden border border-accent-emerald-glow/30 hover:border-accent-emerald-light/50 transition-colors duration-500 p-2 bg-charcoal/20">
                         <!-- Prioritize url over cloudinaryUrl as per user request -->
                         <img [src]="(product.images && product.images.length > 0 && product.images[0].url) ? product.images[0].url : 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2787&auto=format&fit=crop'"
-                            [alt]="product.name" class="w-full h-full object-cover transition-all duration-[2000ms]" />
+                            [alt]="v.name" class="w-full h-full object-cover transition-all duration-[2000ms]" />
                     </div>
                 </div>
             </div>
@@ -44,11 +44,11 @@
                 <!-- Header Info (GSAP Target) -->
                 <div class="mb-16 gsap-pdp-header">
                     <p class="text-silver/80 text-[10px] tracking-[0.3em] uppercase mb-4 font-outfit">
-                        Eau de Parfum
+                        {{ 'product.eauDeParfum' | t }}
                     </p>
                     <h1
                         class="vogue-text text-4xl sm:text-5xl md:text-6xl lg:text-[100px] text-slate-100 italic mb-6 sm:mb-8 leading-none">
-                        {{ product.name }}
+                        {{ v.name }}
                     </h1>
                     <p class="font-outfit font-light text-2xl lg:text-3xl text-silver">
                         {{ (product.priceCents / 100) | currency:'USD' }}
@@ -61,9 +61,9 @@
                 <!-- Description & Details (GSAP Target) -->
                 <div class="gsap-pdp-details flex flex-col gap-12 font-outfit font-light">
                     <div>
-                        <h3 class="text-xs tracking-[0.2em] uppercase text-silver/80 mb-4">La Narrativa</h3>
+                        <h3 class="text-xs tracking-[0.2em] uppercase text-silver/80 mb-4">{{ 'product.narrative' | t }}</h3>
                         <p class="text-lg leading-relaxed text-silver/90 max-w-2xl">
-                            {{ product.description || 'Una exploración vanguardista de materias primas. Esta fragancia suspende la tensión entre oscuras raíces terrenales y etéreas notas de salida metálicas. Mezclado a mano en pequeños lotes para el coleccionista sin compromisos.' }}
+                            {{ v.description || ('product.fallbackDescription' | t) }}
                         </p>
                     </div>
 
@@ -71,7 +71,7 @@
                     <div class="mt-8">
                         <h3
                             class="text-xs tracking-[0.2em] uppercase text-silver/80 mb-6 block w-full border-b border-silver/10 pb-4">
-                            Estructura Olfativa</h3>
+                            {{ 'product.structure' | t }}</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <!-- Top Note -->
@@ -79,8 +79,8 @@
                                 class="flex flex-col items-center md:items-start text-center md:text-left p-6 border border-silver/5 bg-charcoal/30 hover:bg-slate-800/20 transition-colors">
                                 <span
                                     class="material-symbols-outlined text-4xl text-silver/80 mb-4 font-extralight">air</span>
-                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Notas de Salida</h4>
-                                <p class="text-sm font-outfit text-silver">{{ product.principalNotes?.top || 'Bergamota, Pimienta Blanca, Ceniza' }}</p>
+                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">{{ 'product.notes.top' | t }}</h4>
+                                <p class="text-sm font-outfit text-silver">{{ v.notes?.top || ('product.notes.topFallback' | t) }}</p>
                             </div>
 
                             <!-- Heart Note -->
@@ -88,8 +88,8 @@
                                 class="flex flex-col items-center md:items-start text-center md:text-left p-6 border border-silver/5 bg-charcoal/30 hover:bg-slate-800/20 transition-colors">
                                 <span
                                     class="material-symbols-outlined text-4xl text-silver/80 mb-4 font-extralight">spa</span>
-                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Notas de Corazón</h4>
-                                <p class="text-sm font-outfit text-silver">{{ product.principalNotes?.heart || 'Raíz de Iris, Cedro Quemado' }}</p>
+                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">{{ 'product.notes.heart' | t }}</h4>
+                                <p class="text-sm font-outfit text-silver">{{ v.notes?.heart || ('product.notes.heartFallback' | t) }}</p>
                             </div>
 
                             <!-- Base Note -->
@@ -97,8 +97,8 @@
                                 class="flex flex-col items-center md:items-start text-center md:text-left p-6 border border-silver/5 bg-charcoal/30 hover:bg-slate-800/20 transition-colors">
                                 <span
                                     class="material-symbols-outlined text-4xl text-silver/80 mb-4 font-extralight">water_drop</span>
-                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">Notas de Fondo</h4>
-                                <p class="text-sm font-outfit text-silver">{{ product.principalNotes?.base || 'Oud Oscuro, Vetiver, Ámbar' }}</p>
+                                <h4 class="text-[10px] tracking-[0.3em] uppercase text-silver/80 mb-2">{{ 'product.notes.base' | t }}</h4>
+                                <p class="text-sm font-outfit text-silver">{{ v.notes?.base || ('product.notes.baseFallback' | t) }}</p>
                             </div>
                         </div>
                     </div>
@@ -109,17 +109,17 @@
 
                 <!-- Outbound Call To Action (Strict 'Catalog Mode' Rule) -->
                 <div class="gsap-pdp-action">
-                    <p class="text-xs tracking-widest text-silver/80 mb-6 uppercase">Adquisición</p>
+                    <p class="text-xs tracking-widest text-silver/80 mb-6 uppercase">{{ 'product.acquisition' | t }}</p>
                     <!-- Notice this is an anchor tag with an href pointing externally, not an Angular routerLink -->
                     <a [href]="getOutboundUrl()" target="_blank" rel="noopener noreferrer"
                         class="inline-flex items-center justify-between w-full md:w-auto min-w-[300px] border border-silver px-8 py-5 bg-transparent text-silver hover:bg-silver hover:text-charcoal transition-all duration-500 group">
 
-                        <span class="text-sm font-bold uppercase tracking-[0.2em]">Adquirir en Boutique</span>
+                        <span class="text-sm font-bold uppercase tracking-[0.2em]">{{ 'product.acquireButton' | t }}</span>
                         <span
                             class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform">arrow_outward</span>
                     </a>
                     <p class="text-[10px] text-silver/60 mt-4 tracking-widest uppercase">
-                        Serás redirigido a nuestro socio comercial seguro.
+                        {{ 'product.acquireDisclaimer' | t }}
                     </p>
                 </div>
 
@@ -130,13 +130,13 @@
         <!-- Error State -->
         @if (!isLoading && !product) {
         <div class="flex flex-col h-[50vh] items-center justify-center border border-silver/10 p-10 mt-10">
-            <h2 class="vogue-text text-4xl text-silver italic mb-4">Fragancia No Encontrada</h2>
+            <h2 class="vogue-text text-4xl text-silver italic mb-4">{{ 'product.notFound.title' | t }}</h2>
             <p class="font-outfit font-light text-silver/50 text-center max-w-md mb-8">
-                La esencia solicitada ha sido archivada o ya no está disponible en nuestra colección.
+                {{ 'product.notFound.body' | t }}
             </p>
-            <a routerLink="/catalog"
+            <a [routerLink]="locale.localized('/catalog')"
                 class="border-b border-silver pb-1 text-xs uppercase tracking-widest hover:text-white transition-colors">
-                Volver al Catálogo
+                {{ 'product.back' | t }}
             </a>
         </div>
         }

@@ -15,22 +15,20 @@
             <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 mb-24 md:mb-44 mt-6 md:mt-10 items-center">
                 <!-- Text Content -->
                 <div class="order-2 lg:order-1 relative z-20">
-                    <span class="gsap-hero-title text-silver tracking-[0.4em] uppercase text-xs mb-4 block">Selección
-                        Destacada</span>
+                    <span class="gsap-hero-title text-silver tracking-[0.4em] uppercase text-xs mb-4 block">{{ 'home.spotlight.eyebrow' | t }}</span>
 
                     <h1
                         class="gsap-hero-title vogue-text text-5xl sm:text-6xl md:text-[100px] lg:text-[140px] text-silver mb-6 md:mb-8 leading-none">
-                        {{ spotted.name }}
+                        {{ spottedView()?.name }}
                     </h1>
 
                     <div class="gsap-hero-cta flex items-center gap-8">
-                        <a [routerLink]="['/products', formatNameForUrl(spotted.name)]"
+                        <a [routerLink]="locale.localized('/products/' + formatNameForUrl(spotted.name))"
                             class="px-10 py-4 bg-silver text-charcoal text-sm font-bold uppercase tracking-[0.2em] hover:bg-white transition-all">
-                            Descubrir
+                            {{ 'home.spotlight.cta' | t }}
                         </a>
-                        <a routerLink="/catalog"
-                            class="text-silver text-xs font-bold uppercase tracking-[0.2em] border-b border-silver/50 pb-1">Explorar
-                            Catálogo</a>
+                        <a [routerLink]="locale.localized('/catalog')"
+                            class="text-silver text-xs font-bold uppercase tracking-[0.2em] border-b border-silver/50 pb-1">{{ 'home.spotlight.explore' | t }}</a>
                     </div>
                 </div>
 
@@ -38,7 +36,7 @@
                 <div class="order-1 lg:order-2 relative gsap-hero-image">
                     <div
                         class="aspect-[4/5] max-h-[70vh] w-full lg:w-[85%] ml-auto rounded-sm overflow-hidden silver-border p-1 bg-charcoal/40 group relative">
-                        <img [alt]="spotted.name"
+                        <img [alt]="spottedView()?.name"
                             class="w-full h-full object-cover grayscale opacity-80 group-hover:scale-105 transition-transform duration-700"
                             [src]="(spotted.images && spotted.images.length > 0 && spotted.images[0].url) ? spotted.images[0].url : 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2787&auto=format&fit=crop'" />
                         <div
@@ -52,20 +50,18 @@
             } @else if (heroLoaded()) {
             <!-- Fallback hero when no spotted product is resolved -->
             <section class="flex flex-col items-center text-center mb-24 md:mb-44 mt-6 md:mt-10 py-16 md:py-24 relative">
-                <span class="gsap-hero-title text-silver tracking-[0.4em] uppercase text-xs mb-6 block">Maison de
-                    Fragancias</span>
+                <span class="gsap-hero-title text-silver tracking-[0.4em] uppercase text-xs mb-6 block">{{ 'home.brand.eyebrow' | t }}</span>
                 <h1
                     class="gsap-hero-title vogue-text text-6xl sm:text-7xl md:text-[120px] lg:text-[160px] text-silver mb-8 leading-none italic">
                     Adagioz <span class="text-accent-emerald-light">&amp;</span> Harmonie
                 </h1>
                 <p class="text-silver/70 font-outfit font-light max-w-xl mb-12 leading-relaxed">
-                    Una galería curada de arquitectura olfativa. Cada frasco alberga una narrativa que espera
-                    desplegarse sobre la piel.
+                    {{ 'home.brand.intro' | t }}
                 </p>
                 <div class="gsap-hero-cta">
-                    <a routerLink="/catalog"
+                    <a [routerLink]="locale.localized('/catalog')"
                         class="px-10 py-4 bg-silver text-charcoal text-sm font-bold uppercase tracking-[0.2em] hover:bg-white transition-all">
-                        Explorar Catálogo
+                        {{ 'home.spotlight.explore' | t }}
                     </a>
                 </div>
             </section>
@@ -83,27 +79,20 @@
                     <div class="flex flex-col gap-6">
                         <span
                             class="material-symbols-outlined text-accent-emerald-light text-4xl font-extralight">diamond</span>
-                        <h3 class="text-silver text-2xl vogue-text italic">Selección Exclusiva</h3>
-                        <p class="text-silver/80 font-light leading-relaxed font-outfit">Recorremos el mundo para
-                            descubrir las fragancias más exclusivas y codiciadas, asegurando que cada pieza cumpla con
-                            el más alto estándar de lujo.</p>
+                        <h3 class="text-silver text-2xl vogue-text italic">{{ 'home.philosophy.exclusive.title' | t }}</h3>
+                        <p class="text-silver/80 font-light leading-relaxed font-outfit">{{ 'home.philosophy.exclusive.body' | t }}</p>
                     </div>
                     <div class="flex flex-col gap-6 md:mt-12">
                         <span
                             class="material-symbols-outlined text-accent-emerald-light text-4xl font-extralight">travel_explore</span>
-                        <h3 class="text-silver text-2xl vogue-text italic">Excelencia</h3>
-                        <p class="text-silver/80 font-light leading-relaxed font-outfit">Colecciones de las casas
-                            olfativas más prestigiosas del mundo, llevando sus narrativas magistralmente elaboradas
-                            directamente a tu colección personal.
-                        </p>
+                        <h3 class="text-silver text-2xl vogue-text italic">{{ 'home.philosophy.excellence.title' | t }}</h3>
+                        <p class="text-silver/80 font-light leading-relaxed font-outfit">{{ 'home.philosophy.excellence.body' | t }}</p>
                     </div>
                     <div class="flex flex-col gap-6 md:mt-24">
                         <span
                             class="material-symbols-outlined text-accent-emerald-light text-4xl font-extralight">verified</span>
-                        <h3 class="text-silver text-2xl vogue-text italic">Autenticidad Verificada</h3>
-                        <p class="text-silver/80 font-light leading-relaxed font-outfit">Cada fragancia en nuestro
-                            catálogo es meticulosamente autenticada. Garantizamos la condición prístina y la procedencia
-                            original de cada obra maestra que entregamos.</p>
+                        <h3 class="text-silver text-2xl vogue-text italic">{{ 'home.philosophy.authenticity.title' | t }}</h3>
+                        <p class="text-silver/80 font-light leading-relaxed font-outfit">{{ 'home.philosophy.authenticity.body' | t }}</p>
                     </div>
                 </div>
             </section>
@@ -120,17 +109,15 @@
                 <div class="flex flex-col md:flex-row justify-between items-end gap-8 mb-16 relative z-10">
                     <div class="max-w-xl">
                         <span
-                            class="text-accent-emerald-light tracking-[0.4em] uppercase text-xs mb-4 block font-bold">El
-                            Diario</span>
-                        <h2 class="vogue-text text-4xl md:text-5xl text-silver italic mb-6">Fragmentos de Inspiración
-                        </h2>
+                            class="text-accent-emerald-light tracking-[0.4em] uppercase text-xs mb-4 block font-bold">{{ 'home.journal.eyebrow' | t }}</span>
+                        <h2 class="vogue-text text-4xl md:text-5xl text-silver italic mb-6">{{ 'home.journal.title' | t }}</h2>
                         <p class="text-silver/70 font-outfit font-light leading-relaxed">
-                            Detrás de cada esencia hay una narrativa.
+                            {{ 'home.journal.intro' | t }}
                         </p>
                     </div>
                     <a href="https://instagram.com/adagiozandharmonie" target="_blank" rel="noopener noreferrer"
                         class="inline-flex items-center gap-4 text-silver text-xs font-bold uppercase tracking-[0.2em] border-b border-silver/30 pb-2 hover:border-silver transition-colors whitespace-nowrap">
-                        Sigue el Proceso <span class="material-symbols-outlined text-sm">north_east</span>
+                        {{ 'home.journal.follow' | t }} <span class="material-symbols-outlined text-sm">north_east</span>
                     </a>
                 </div>
 
@@ -176,14 +163,13 @@
                 class="py-16 md:py-20 text-center flex flex-col items-center justify-center pb-24 md:pb-40 relative section-glow">
                 <div class="relative z-10 flex flex-col items-center">
                     <span class="material-symbols-outlined text-accent-emerald-light text-5xl mb-8">water_drop</span>
-                    <h2 class="vogue-text text-5xl md:text-7xl text-silver italic mb-8">Descubre la Esencia</h2>
+                    <h2 class="vogue-text text-5xl md:text-7xl text-silver italic mb-8">{{ 'home.cta.title' | t }}</h2>
                     <p class="text-silver/80 font-outfit font-light max-w-lg mb-12">
-                        Entra en nuestra galería curada de arquitectura olfativa. Cada frasco alberga una narrativa que
-                        espera desplegarse sobre la piel.
+                        {{ 'home.cta.body' | t }}
                     </p>
-                    <a routerLink="/catalog"
+                    <a [routerLink]="locale.localized('/catalog')"
                         class="inline-flex items-center gap-4 border border-accent-emerald-light/50 px-10 py-5 bg-transparent text-silver hover:bg-accent-emerald-light/20 hover:border-accent-emerald-light transition-all duration-500 group">
-                        <span class="text-xs font-bold uppercase tracking-[0.2em]">Entrar al Catálogo</span>
+                        <span class="text-xs font-bold uppercase tracking-[0.2em]">{{ 'home.cta.button' | t }}</span>
                         <span
                             class="material-symbols-outlined transform group-hover:translate-x-2 transition-transform">arrow_forward</span>
                     </a>

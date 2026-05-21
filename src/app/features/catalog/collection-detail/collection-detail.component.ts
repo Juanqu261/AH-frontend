@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, PLATFORM_ID, signal, ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, signal, computed, ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../../core/services/site-config.service';
@@ -6,6 +6,9 @@ import { ProductService } from '../../../core/services/product.service';
 import { CollectionConfig } from '../../../core/models/site-config.model';
 import { Product, PaginatedResponse } from '../../../core/models/product.model';
 import { formatNameForUrl } from '../../../core/utils/slug.util';
+import { LocaleService } from '../../../core/services/locale.service';
+import { TranslatePipe } from '../../../core/i18n/t.pipe';
+import { localizedProduct } from '../../../core/i18n/product-locale';
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,7 +20,7 @@ if (typeof window !== 'undefined') {
 @Component({
     selector: 'app-collection-detail',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, TranslatePipe],
     providers: [CurrencyPipe],
     templateUrl: './collection-detail.component.html',
     styleUrls: ['./collection-detail.component.scss']
@@ -28,10 +31,15 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
     private siteConfigService = inject(SiteConfigService);
     private productService = inject(ProductService);
     private platformId = inject(PLATFORM_ID);
+    public locale = inject(LocaleService);
 
     collection = signal<CollectionConfig | null>(null);
     products = signal<Product[]>([]);
     isLoading = signal(true);
+
+    productViews = computed(() =>
+        this.products().map(p => ({ raw: p, view: localizedProduct(p, this.locale.lang()) }))
+    );
 
     @ViewChildren('productCard') productCards!: QueryList<ElementRef>;
 
@@ -39,7 +47,7 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
         this.route.paramMap.subscribe(params => {
             const slug = params.get('slug');
             if (!slug) {
-                this.router.navigate(['/collections']);
+                this.router.navigateByUrl(this.locale.localized('/collections'));
                 return;
             }
 
@@ -47,7 +55,7 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
                 const collectionConfig = this.siteConfigService.getCollectionBySlug(slug);
 
                 if (!collectionConfig) {
-                    this.router.navigate(['/collections']);
+                    this.router.navigateByUrl(this.locale.localized('/collections'));
                     return;
                 }
 

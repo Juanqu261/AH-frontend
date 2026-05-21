@@ -29,4 +29,13 @@ export interface Product {
         heart?: string;
         base?: string;
     };
+
+    // Spanish translations (populated server-side via Claude — see backend translation.service.ts).
+    nameEs?: string;
+    descriptionEs?: string;
+    principalNotesEs?: {
+        top?: string;
+        heart?: string;
+        base?: string;
+    };
 }

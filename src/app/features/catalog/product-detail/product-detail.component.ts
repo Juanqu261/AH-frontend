@@ -1,17 +1,20 @@
-import { Component, OnInit, inject, PLATFORM_ID, AfterViewInit } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, AfterViewInit, signal, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
 import { Product } from '../../../core/models/product.model';
 import { formatNameForUrl } from '../../../core/utils/slug.util';
 import { environment } from '../../../../environments/environment';
+import { LocaleService } from '../../../core/services/locale.service';
+import { TranslatePipe } from '../../../core/i18n/t.pipe';
+import { localizedProduct } from '../../../core/i18n/product-locale';
 
 import { gsap } from 'gsap';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslatePipe],
   providers: [CurrencyPipe],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
@@ -20,9 +23,19 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
   private platformId = inject(PLATFORM_ID);
+  public locale = inject(LocaleService);
 
-  product: Product | null = null;
+  productSignal = signal<Product | null>(null);
   isLoading = true;
+
+  view = computed(() => {
+    const p = this.productSignal();
+    return p ? localizedProduct(p, this.locale.lang()) : null;
+  });
+
+  get product(): Product | null {
+    return this.productSignal();
+  }
 
   // Create a naive shopify handle based on product name
   shopifyBaseUrl = environment.shopifyBaseUrl;
@@ -36,7 +49,7 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
 
         this.productService.getProductByHandle(nameSlug).subscribe({
           next: (matchedProduct: Product) => {
-            this.product = matchedProduct;
+            this.productSignal.set(matchedProduct);
             this.shopifyHandle = matchedProduct.shopifyHandle ?? this.formatNameForUrl(matchedProduct.name);
             this.isLoading = false;
 
