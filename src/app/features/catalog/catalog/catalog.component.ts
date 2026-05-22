@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, PLATFORM_ID, ViewChildren, QueryList, ElementRef, AfterViewInit, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, ViewChildren, QueryList, ElementRef, signal, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../../core/services/site-config.service';
@@ -24,7 +24,7 @@ if (typeof window !== 'undefined') {
     templateUrl: './catalog.component.html',
     styleUrls: ['./catalog.component.scss']
 })
-export class CatalogComponent implements OnInit, AfterViewInit {
+export class CatalogComponent implements OnInit {
     private siteConfigService = inject(SiteConfigService);
     private productService = inject(ProductService);
     private platformId = inject(PLATFORM_ID);
@@ -66,10 +66,6 @@ export class CatalogComponent implements OnInit, AfterViewInit {
                 }
             });
         });
-    }
-
-    ngAfterViewInit() {
-        // Animations are deferred to after data loads (see ngOnInit)
     }
 
     private initScrollAnimations() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, PLATFORM_ID, signal, computed, ViewChildren, QueryList, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, signal, computed, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../../core/services/site-config.service';
@@ -25,7 +25,7 @@ if (typeof window !== 'undefined') {
     templateUrl: './collection-detail.component.html',
     styleUrls: ['./collection-detail.component.scss']
 })
-export class CollectionDetailComponent implements OnInit, AfterViewInit {
+export class CollectionDetailComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     private siteConfigService = inject(SiteConfigService);
@@ -88,10 +88,6 @@ export class CollectionDetailComponent implements OnInit, AfterViewInit {
                 });
             });
         });
-    }
-
-    ngAfterViewInit() {
-        // Animations are deferred to after data loads (see ngOnInit)
     }
 
     private initScrollAnimations() {

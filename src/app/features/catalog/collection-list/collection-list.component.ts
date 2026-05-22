@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, PLATFORM_ID, AfterViewInit, signal } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, signal } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../../core/services/site-config.service';
@@ -27,7 +27,7 @@ interface CollectionCard extends CollectionConfig {
   templateUrl: './collection-list.component.html',
   styleUrls: ['./collection-list.component.scss']
 })
-export class CollectionListComponent implements OnInit, AfterViewInit {
+export class CollectionListComponent implements OnInit {
   private siteConfigService = inject(SiteConfigService);
   private productService = inject(ProductService);
   private platformId = inject(PLATFORM_ID);
@@ -70,10 +70,6 @@ export class CollectionListComponent implements OnInit, AfterViewInit {
         }
       });
     });
-  }
-
-  ngAfterViewInit() {
-    // Animations are deferred to after data loads (see ngOnInit)
   }
 
   private initScrollAnimations() {

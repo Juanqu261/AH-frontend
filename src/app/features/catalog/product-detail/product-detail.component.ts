@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, PLATFORM_ID, AfterViewInit, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, PLATFORM_ID, signal, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
@@ -19,7 +19,7 @@ import { gsap } from 'gsap';
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
-export class ProductDetailComponent implements OnInit, AfterViewInit {
+export class ProductDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
   private platformId = inject(PLATFORM_ID);
@@ -70,10 +70,6 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
         });
       }
     });
-  }
-
-  ngAfterViewInit() {
-    // Handled in subscription callback to ensure DOM is ready
   }
 
   private initEntranceAnimation() {

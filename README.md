@@ -63,3 +63,10 @@ The backend must be running at `http://localhost:3000` — `proxy.conf.json` for
 ```bash
 npm test                   # Karma + Jasmine
 ```
+
+## Security
+
+- **Static analysis**: `npm run lint` runs `@angular-eslint` + `@typescript-eslint` across all `.ts` and `.html` files.
+- **Template linting**: `@angular-eslint/template` rules catch unsafe bindings and accessibility issues at build time.
+- **Dependency audit**: `npm run audit:check` surfaces high/critical CVEs via `npm audit`.
+- Admin route (`/admin/config`) is protected by a backend-verified key guard; no credentials in the bundle.
