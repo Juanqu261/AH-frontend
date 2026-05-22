@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, PLATFORM_ID, signal, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, inject, PLATFORM_ID, signal, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
@@ -14,6 +14,7 @@ import { gsap } from 'gsap';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule, TranslatePipe],
   providers: [CurrencyPipe],
   templateUrl: './product-detail.component.html',
@@ -23,6 +24,7 @@ export class ProductDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
   private platformId = inject(PLATFORM_ID);
+  private cdr = inject(ChangeDetectorRef);
   public locale = inject(LocaleService);
 
   productSignal = signal<Product | null>(null);
@@ -52,6 +54,7 @@ export class ProductDetailComponent implements OnInit {
             this.productSignal.set(matchedProduct);
             this.shopifyHandle = matchedProduct.shopifyHandle ?? this.formatNameForUrl(matchedProduct.name);
             this.isLoading = false;
+            this.cdr.detectChanges();
 
             if (isPlatformBrowser(this.platformId)) {
               setTimeout(() => {

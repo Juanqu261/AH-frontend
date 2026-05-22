@@ -1,13 +1,18 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './features/home/home.component';
-import { CollectionListComponent } from './features/catalog/collection-list/collection-list.component';
-import { ProductDetailComponent } from './features/catalog/product-detail/product-detail.component';
 import { adminGuard } from './core/guards/admin.guard';
 import { langMatchGuard } from './core/guards/lang-match.guard';
 
 const PUBLIC_CHILDREN: Routes = [
-    { path: '', component: HomeComponent, title: 'Adagioz & Harmonie' },
-    { path: 'collections', component: CollectionListComponent, title: 'Collections | Adagioz & Harmonie' },
+    {
+        path: '',
+        loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent),
+        title: 'Adagioz & Harmonie'
+    },
+    {
+        path: 'collections',
+        loadComponent: () => import('./features/catalog/collection-list/collection-list.component').then(m => m.CollectionListComponent),
+        title: 'Collections | Adagioz & Harmonie'
+    },
     {
         path: 'collections/:slug',
         loadComponent: () =>
@@ -20,7 +25,11 @@ const PUBLIC_CHILDREN: Routes = [
             import('./features/catalog/catalog/catalog.component').then(m => m.CatalogComponent),
         title: 'Catalog | Adagioz & Harmonie'
     },
-    { path: 'products/:name', component: ProductDetailComponent, title: 'Product Details | Adagioz & Harmonie' },
+    {
+        path: 'products/:name',
+        loadComponent: () => import('./features/catalog/product-detail/product-detail.component').then(m => m.ProductDetailComponent),
+        title: 'Product Details | Adagioz & Harmonie'
+    },
 ];
 
 export const routes: Routes = [

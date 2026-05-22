@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, PLATFORM_ID, ViewChildren, QueryList, ElementRef, signal, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, inject, PLATFORM_ID, ViewChildren, QueryList, ElementRef, signal, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../../core/services/site-config.service';
@@ -19,6 +19,7 @@ if (typeof window !== 'undefined') {
 @Component({
     selector: 'app-catalog',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, RouterModule, TranslatePipe],
     providers: [CurrencyPipe],
     templateUrl: './catalog.component.html',

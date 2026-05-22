@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, PLATFORM_ID, signal, computed, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, inject, PLATFORM_ID, signal, computed, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../../core/services/site-config.service';
@@ -20,6 +20,7 @@ if (typeof window !== 'undefined') {
 @Component({
     selector: 'app-collection-detail',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, RouterModule, TranslatePipe],
     providers: [CurrencyPipe],
     templateUrl: './collection-detail.component.html',

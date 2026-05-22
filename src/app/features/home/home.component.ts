@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, inject, PLATFORM_ID, signal, OnInit, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, AfterViewInit, inject, PLATFORM_ID, signal, OnInit, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../core/services/site-config.service';
@@ -19,6 +19,7 @@ if (typeof window !== 'undefined') {
 @Component({
   selector: 'app-home',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule, TranslatePipe],
   providers: [CurrencyPipe],
   templateUrl: './home.component.html',
@@ -26,6 +27,7 @@ if (typeof window !== 'undefined') {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   private platformId = inject(PLATFORM_ID);
+  private cdr = inject(ChangeDetectorRef);
   private siteConfigService = inject(SiteConfigService);
   private productService = inject(ProductService);
   public locale = inject(LocaleService);
@@ -55,8 +57,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             this.spottedProduct.set(matched);
           }
           this.heroLoaded.set(true);
+          this.cdr.detectChanges();
 
-          // Run hero animations after Angular renders the @if block
           if (matched && isPlatformBrowser(this.platformId)) {
             setTimeout(() => this.initHeroAnimations(), 50);
           }

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, inject, PLATFORM_ID, signal } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../../core/services/site-config.service';
@@ -23,6 +23,7 @@ interface CollectionCard extends CollectionConfig {
 @Component({
   selector: 'app-collection-list',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './collection-list.component.html',
   styleUrls: ['./collection-list.component.scss']

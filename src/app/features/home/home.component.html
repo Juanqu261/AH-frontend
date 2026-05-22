@@ -103,6 +103,7 @@
             <!-- Decorative orb between sections -->
             <div class="accent-orb w-[300px] h-[300px] right-0 top-[60%]" style="z-index: 0;"></div>
 
+            @defer (on viewport) {
             <!-- JOURNAL SECTION -->
             <section id="journal" class="py-16 md:py-24 mb-16 md:mb-32 relative section-glow">
                 <!-- Header -->
@@ -154,6 +155,10 @@
                     </a>
                 </div>
             </section>
+
+            } @placeholder {
+            <div class="h-64 mb-16 md:mb-32"></div>
+            }
 
             <!-- Section divider: journal to CTA -->
             <div class="section-divider-emerald mb-8"></div>

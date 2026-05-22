@@ -70,3 +70,12 @@ npm test                   # Karma + Jasmine
 - **Template linting**: `@angular-eslint/template` rules catch unsafe bindings and accessibility issues at build time.
 - **Dependency audit**: `npm run audit:check` surfaces high/critical CVEs via `npm audit`.
 - Admin route (`/admin/config`) is protected by a backend-verified key guard; no credentials in the bundle.
+
+## Performance
+
+- **Lazy routes**: all feature routes use `loadComponent()` — initial bundle ships only what the first route needs.
+- **OnPush change detection**: all components use `ChangeDetectionStrategy.OnPush`; signals trigger updates automatically with zero extra check cycles.
+- **Deferred content**: home page Journal section uses `@defer (on viewport)` — rendered only when scrolled into view.
+- **Preconnect**: `<link rel="preconnect">` hints in `index.html` for Google Fonts and Cloudinary reduce DNS + TLS handshake time.
+- **Audit**: run Lighthouse against `http://localhost:8080` (prod build). Target LCP < 2.5s, CLS < 0.1, TBT < 200ms.
+- **Change detection profiling**: Angular DevTools (Chrome extension) → Profiler tab while navigating the catalog.

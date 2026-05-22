@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LocaleService } from '../../../core/services/locale.service';
@@ -7,6 +7,7 @@ import { TranslatePipe } from '../../../core/i18n/t.pipe';
 @Component({
   selector: 'app-navbar',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule, CommonModule, TranslatePipe],
   templateUrl: './navbar.component.html'
 })
