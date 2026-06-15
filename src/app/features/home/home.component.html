@@ -41,8 +41,7 @@
                             [src]="(spotted.images && spotted.images.length > 0 && spotted.images[0].url) ? spotted.images[0].url : 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2787&auto=format&fit=crop'" />
                         <div
                             class="absolute bottom-0 left-0 p-8 bg-charcoal/80 backdrop-blur-sm border-t border-r border-silver/20">
-                            <span class="font-outfit font-light text-silver text-2xl">{{ (spotted.priceCents / 100) |
-                                currency:'USD' }}</span>
+                            <span class="font-outfit font-light text-silver text-2xl">{{ spotted.priceCents | displayPrice }}</span>
                         </div>
                     </div>
                 </div>

@@ -45,8 +45,7 @@
                         <p class="text-silver/80 text-xs font-outfit tracking-widest mt-2 uppercase">{{ 'catalog.eauDeParfum' | t }}</p>
                     </div>
                     <div class="flex flex-col items-end gap-2">
-                        <p class="font-outfit font-light text-silver text-xl">{{ (item.raw.priceCents / 100) |
-                            currency:'USD' }}</p>
+                        <p class="font-outfit font-light text-silver text-xl">{{ item.raw.priceCents | displayPrice }}</p>
                         <a [routerLink]="locale.localized('/products/' + formatNameForUrl(item.raw.name))"
                             class="text-[10px] uppercase tracking-widest text-silver hover:text-white transition-colors flex items-center gap-1 cursor-pointer">
                             {{ 'catalog.explore' | t }} <span class="material-symbols-outlined text-[14px]">arrow_forward</span>

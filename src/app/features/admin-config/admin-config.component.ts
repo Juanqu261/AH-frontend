@@ -1,13 +1,13 @@
-import { Component, ChangeDetectionStrategy, inject, signal, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
-import { LucideAngularModule, Star, Sparkles, Library, Plus, Settings2, RefreshCw, Save, Check, AlertCircle, Loader2 } from 'lucide-angular';
+import { LucideAngularModule, Star, Sparkles, Library, Plus, Settings2, RefreshCw, Save, Check, AlertCircle, Loader2, DollarSign } from 'lucide-angular';
 import { environment } from '../../../environments/environment';
 import { ADMIN_KEY_STORAGE } from '../../core/guards/admin.guard';
-import { SiteConfig, CollectionConfig } from '../../core/models/site-config.model';
+import { SiteConfig, CollectionConfig, PricingConfig } from '../../core/models/site-config.model';
 import { ProductChipComponent } from './components/product-chip.component';
 import { CollectionEditorComponent } from './components/collection-editor.component';
 import {
@@ -17,11 +17,23 @@ import {
 
 type Tab = 'editor' | 'advanced';
 
+const DEFAULT_PRICING: PricingConfig = { usdToCop: 1, currencyCode: 'USD', roundTo: 0 };
+
 const EMPTY_CONFIG: SiteConfig = {
   spottedProduct: '',
   catalogRecommendations: [],
-  collections: []
+  collections: [],
+  pricing: { ...DEFAULT_PRICING }
 };
+
+/** Coerces any partial/legacy config into a complete pricing block. */
+function normalizePricing(pricing?: Partial<PricingConfig>): PricingConfig {
+  return {
+    usdToCop: pricing?.usdToCop && pricing.usdToCop > 0 ? pricing.usdToCop : DEFAULT_PRICING.usdToCop,
+    currencyCode: pricing?.currencyCode || DEFAULT_PRICING.currencyCode,
+    roundTo: pricing?.roundTo && pricing.roundTo > 0 ? pricing.roundTo : DEFAULT_PRICING.roundTo,
+  };
+}
 
 @Component({
   selector: 'app-admin-config',
@@ -53,7 +65,7 @@ export class AdminConfigComponent implements OnInit {
   activeTab = signal<Tab>('editor');
   lastAddedIndex = signal<number>(-1);
 
-  readonly icons = { Star, Sparkles, Library, Plus, Settings2, RefreshCw, Save, Check, AlertCircle, Loader2 };
+  readonly icons = { Star, Sparkles, Library, Plus, Settings2, RefreshCw, Save, Check, AlertCircle, Loader2, DollarSign };
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
@@ -69,7 +81,8 @@ export class AdminConfigComponent implements OnInit {
         const normalized: SiteConfig = {
           spottedProduct: cfg?.spottedProduct ?? '',
           catalogRecommendations: cfg?.catalogRecommendations ?? [],
-          collections: cfg?.collections ?? []
+          collections: cfg?.collections ?? [],
+          pricing: normalizePricing(cfg?.pricing)
         };
         this.config.set(normalized);
         this.configJson.set(JSON.stringify(normalized, null, 2));
@@ -92,7 +105,8 @@ export class AdminConfigComponent implements OnInit {
         this.config.set({
           spottedProduct: parsed.spottedProduct ?? '',
           catalogRecommendations: parsed.catalogRecommendations ?? [],
-          collections: parsed.collections ?? []
+          collections: parsed.collections ?? [],
+          pricing: normalizePricing(parsed.pricing)
         });
         this.jsonError.set('');
       } catch (e: any) {
@@ -108,6 +122,36 @@ export class AdminConfigComponent implements OnInit {
 
     this.activeTab.set(tab);
   }
+
+  // --- Pricing / currency ---
+  get pricing(): PricingConfig {
+    return this.config().pricing ?? { ...DEFAULT_PRICING };
+  }
+
+  updatePricing(patch: Partial<PricingConfig>) {
+    this.config.update(c => ({
+      ...c,
+      pricing: { ...normalizePricing(c.pricing), ...patch }
+    }));
+  }
+
+  /** Sample of how a $25.00 USD product would render with the current settings. */
+  pricePreview = computed<string>(() => {
+    const p = normalizePricing(this.config().pricing);
+    const amount = 25 * p.usdToCop;
+    const rounded = p.roundTo > 0 ? Math.round(amount / p.roundTo) * p.roundTo : amount;
+    const isCop = p.currencyCode.toUpperCase() === 'COP';
+    try {
+      return new Intl.NumberFormat(isCop ? 'es-CO' : 'en-US', {
+        style: 'currency',
+        currency: p.currencyCode,
+        minimumFractionDigits: isCop ? 0 : 2,
+        maximumFractionDigits: isCop ? 0 : 2,
+      }).format(rounded);
+    } catch {
+      return `${rounded} ${p.currencyCode}`;
+    }
+  });
 
   // --- Spotted product ---
   openSpottedPicker() {
@@ -183,7 +227,7 @@ export class AdminConfigComponent implements OnInit {
     if (this.activeTab() === 'advanced') {
       try {
         const parsed = JSON.parse(this.configJson()) as SiteConfig;
-        this.config.set(parsed);
+        this.config.set({ ...parsed, pricing: normalizePricing(parsed.pricing) });
         this.jsonError.set('');
       } catch (e: any) {
         this.jsonError.set('Invalid JSON: ' + (e?.message ?? 'parse error'));

@@ -56,6 +56,56 @@
           </ng-template>
         </section>
 
+        <!-- Pricing / Currency -->
+        <section class="space-y-4 pt-8 border-t border-white/5">
+          <div>
+            <h3 class="flex items-center gap-2.5 text-xs uppercase tracking-[0.3em] text-gray-400">
+              <lucide-icon [img]="icons.DollarSign" class="w-4 h-4 text-gray-500"></lucide-icon>
+              Pricing &amp; Currency
+            </h3>
+            <p class="text-[11px] text-gray-600 mt-2 leading-relaxed">
+              Products sync from Shopify in USD. Set a manual rate to display prices in another currency
+              (e.g. COP). The raw USD price is multiplied by the rate. Leave the rate at <span class="font-mono">1</span>
+              and currency <span class="font-mono">USD</span> to show prices unchanged.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="space-y-1.5">
+              <label class="block text-[10px] uppercase tracking-[0.25em] text-gray-500">Rate (1 USD =)</label>
+              <input
+                type="number" min="0" step="any"
+                [ngModel]="pricing.usdToCop"
+                (ngModelChange)="updatePricing({ usdToCop: +$event })"
+                class="w-full bg-charcoal border border-white/10 rounded p-2.5 text-sm text-silver focus:ring-2 focus:ring-accent-emerald-light/70 focus:border-transparent transition-all"
+                placeholder="5000" />
+            </div>
+            <div class="space-y-1.5">
+              <label class="block text-[10px] uppercase tracking-[0.25em] text-gray-500">Currency Code</label>
+              <input
+                type="text" maxlength="3"
+                [ngModel]="pricing.currencyCode"
+                (ngModelChange)="updatePricing({ currencyCode: ($event || '').toUpperCase() })"
+                class="w-full bg-charcoal border border-white/10 rounded p-2.5 text-sm text-silver uppercase focus:ring-2 focus:ring-accent-emerald-light/70 focus:border-transparent transition-all"
+                placeholder="COP" />
+            </div>
+            <div class="space-y-1.5">
+              <label class="block text-[10px] uppercase tracking-[0.25em] text-gray-500">Round To (0 = off)</label>
+              <input
+                type="number" min="0" step="any"
+                [ngModel]="pricing.roundTo"
+                (ngModelChange)="updatePricing({ roundTo: +$event })"
+                class="w-full bg-charcoal border border-white/10 rounded p-2.5 text-sm text-silver focus:ring-2 focus:ring-accent-emerald-light/70 focus:border-transparent transition-all"
+                placeholder="1000" />
+            </div>
+          </div>
+
+          <p class="text-[11px] text-gray-500">
+            Preview: a <span class="font-mono text-gray-400">$25.00</span> USD product displays as
+            <span class="font-mono text-accent-emerald-light">{{ pricePreview() }}</span>
+          </p>
+        </section>
+
         <!-- Catalog Recommendations -->
         <section class="space-y-3 pt-8 border-t border-white/5">
           <div class="flex items-center justify-between">

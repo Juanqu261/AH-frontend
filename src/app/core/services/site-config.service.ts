@@ -1,9 +1,11 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { SiteConfig, CollectionConfig } from '../models/site-config.model';
+import { SiteConfig, CollectionConfig, PricingConfig } from '../models/site-config.model';
 import { environment } from '../../../environments/environment';
 
 const MAX_CATALOG_RECOMMENDATIONS = 10;
+
+const DEFAULT_PRICING: PricingConfig = { usdToCop: 1, currencyCode: 'USD', roundTo: 0 };
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +28,16 @@ export class SiteConfigService {
     readonly catalogRecommendationSlugs = computed<string[]>(() => {
         const slugs = this.configSignal()?.catalogRecommendations ?? [];
         return slugs.slice(0, MAX_CATALOG_RECOMMENDATIONS);
+    });
+
+    /** Normalized pricing settings with safe fallbacks (defaults to raw USD). */
+    readonly pricing = computed<PricingConfig>(() => {
+        const p = this.configSignal()?.pricing;
+        return {
+            usdToCop: p?.usdToCop && p.usdToCop > 0 ? p.usdToCop : DEFAULT_PRICING.usdToCop,
+            currencyCode: p?.currencyCode || DEFAULT_PRICING.currencyCode,
+            roundTo: p?.roundTo && p.roundTo > 0 ? p.roundTo : DEFAULT_PRICING.roundTo,
+        };
     });
 
     loadConfig(): Promise<SiteConfig> {

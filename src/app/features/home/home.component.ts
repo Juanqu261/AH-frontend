@@ -1,7 +1,8 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, AfterViewInit, inject, PLATFORM_ID, signal, OnInit, computed } from '@angular/core';
-import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SiteConfigService } from '../../core/services/site-config.service';
+import { DisplayPricePipe } from '../../core/pipes/display-price.pipe';
 import { ProductService } from '../../core/services/product.service';
 import { Product, PaginatedResponse } from '../../core/models/product.model';
 import { formatNameForUrl } from '../../core/utils/slug.util';
@@ -20,8 +21,7 @@ if (typeof window !== 'undefined') {
   selector: 'app-home',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, TranslatePipe],
-  providers: [CurrencyPipe],
+  imports: [CommonModule, RouterModule, TranslatePipe, DisplayPricePipe],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

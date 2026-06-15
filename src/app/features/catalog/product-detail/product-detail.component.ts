@@ -1,7 +1,9 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, inject, PLATFORM_ID, signal, computed } from '@angular/core';
-import { CommonModule, isPlatformBrowser, CurrencyPipe } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
+import { SiteConfigService } from '../../../core/services/site-config.service';
+import { DisplayPricePipe } from '../../../core/pipes/display-price.pipe';
 import { Product } from '../../../core/models/product.model';
 import { formatNameForUrl } from '../../../core/utils/slug.util';
 import { environment } from '../../../../environments/environment';
@@ -15,14 +17,14 @@ import { gsap } from 'gsap';
   selector: 'app-product-detail',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, TranslatePipe],
-  providers: [CurrencyPipe],
+  imports: [CommonModule, RouterModule, TranslatePipe, DisplayPricePipe],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
+  private siteConfigService = inject(SiteConfigService);
   private platformId = inject(PLATFORM_ID);
   private cdr = inject(ChangeDetectorRef);
   public locale = inject(LocaleService);
@@ -44,6 +46,9 @@ export class ProductDetailComponent implements OnInit {
   shopifyHandle = '';
 
   ngOnInit() {
+    // Ensure pricing config is available (e.g. on direct deep-links to this page).
+    this.siteConfigService.loadConfig().catch(() => { /* falls back to USD display */ });
+
     this.route.paramMap.subscribe(params => {
       const nameSlug = params.get('name');
       if (nameSlug) {

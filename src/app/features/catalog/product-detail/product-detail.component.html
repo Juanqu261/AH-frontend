@@ -51,7 +51,7 @@
                         {{ v.name }}
                     </h1>
                     <p class="font-outfit font-light text-2xl lg:text-3xl text-silver">
-                        {{ (product.priceCents / 100) | currency:'USD' }}
+                        {{ product.priceCents | displayPrice }}
                     </p>
                 </div>
 
