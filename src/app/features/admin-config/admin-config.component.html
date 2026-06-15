@@ -175,6 +175,53 @@
         </div>
       </ng-container>
 
+      <!-- ============ DATA SYNC (always visible) ============ -->
+      <section class="space-y-4 pt-8 border-t border-white/5">
+        <div>
+          <h3 class="flex items-center gap-2.5 text-xs uppercase tracking-[0.3em] text-gray-400">
+            <lucide-icon [img]="icons.Database" class="w-4 h-4 text-gray-500"></lucide-icon>
+            Data Sync
+          </h3>
+          <p class="text-[11px] text-gray-600 mt-2 leading-relaxed">
+            Pull product data from Shopify. <span class="text-gray-400">Delta</span> syncs only items changed in
+            the last 24h (fast). <span class="text-gray-400">Full</span> re-fetches the entire catalog and can
+            take several minutes. Runs in the background — you can leave this page.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button type="button" (click)="triggerSync('delta')"
+                  [disabled]="syncBusy()"
+                  class="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-silver border border-white/10 hover:border-white/30 hover:bg-white/5 rounded px-4 py-2 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+            <lucide-icon [img]="icons.RefreshCw" [ngClass]="{ 'animate-spin': syncBusy() && syncStatus()?.mode === 'delta' }" class="w-3.5 h-3.5"></lucide-icon>
+            Delta Sync
+          </button>
+          <button type="button" (click)="triggerSync('full')"
+                  [disabled]="syncBusy()"
+                  class="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-gray-300 hover:text-silver border border-white/10 hover:border-white/30 hover:bg-white/5 rounded px-4 py-2 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+            <lucide-icon [img]="icons.Database" [ngClass]="{ 'animate-spin': syncBusy() && syncStatus()?.mode === 'full' }" class="w-3.5 h-3.5"></lucide-icon>
+            Full Sync
+          </button>
+
+          <span *ngIf="syncStatus() as s" class="text-[11px] tracking-wider"
+                [ngClass]="{
+                  'text-gray-400': s.state === 'running',
+                  'text-accent-emerald-light': s.state === 'success',
+                  'text-yellow-400': s.state === 'partial',
+                  'text-red-400': s.state === 'failed',
+                  'text-gray-600': s.state === 'idle'
+                }">
+            <ng-container [ngSwitch]="s.state">
+              <span *ngSwitchCase="'running'">Running {{ s.mode }} sync…</span>
+              <span *ngSwitchCase="'success'">Last {{ s.mode }} sync: {{ s.lastResult?.syncResult?.created }} created, {{ s.lastResult?.syncResult?.updated }} updated, {{ s.lastResult?.syncResult?.failed }} failed</span>
+              <span *ngSwitchCase="'partial'">Last {{ s.mode }} sync finished with {{ s.lastResult?.syncResult?.failed }} failures</span>
+              <span *ngSwitchCase="'failed'">Last {{ s.mode }} sync failed</span>
+              <span *ngSwitchDefault>Idle</span>
+            </ng-container>
+          </span>
+        </div>
+      </section>
+
       <!-- Save row -->
       <div class="pt-6 border-t border-white/5 flex items-end justify-between gap-6 bg-[#131313] -mx-8 -mb-8 px-8 py-6">
         <div class="flex-1 max-w-sm space-y-2">

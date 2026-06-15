@@ -1,10 +1,10 @@
-import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed, OnInit, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Dialog } from '@angular/cdk/dialog';
-import { LucideAngularModule, Star, Sparkles, Library, Plus, Settings2, RefreshCw, Save, Check, AlertCircle, Loader2, DollarSign } from 'lucide-angular';
+import { LucideAngularModule, Star, Sparkles, Library, Plus, Settings2, RefreshCw, Save, Check, AlertCircle, Loader2, DollarSign, Database } from 'lucide-angular';
 import { environment } from '../../../environments/environment';
 import { ADMIN_KEY_STORAGE } from '../../core/guards/admin.guard';
 import { SiteConfig, CollectionConfig, PricingConfig } from '../../core/models/site-config.model';
@@ -16,6 +16,26 @@ import {
 } from './components/product-picker-dialog.component';
 
 type Tab = 'editor' | 'advanced';
+type SyncMode = 'full' | 'delta';
+type SyncState = 'idle' | 'running' | 'success' | 'partial' | 'failed';
+
+interface SyncResult {
+  success: boolean;
+  totalProcessed: number;
+  created: number;
+  updated: number;
+  failed: number;
+  errors: string[];
+  duration: number;
+}
+
+interface SyncStatusSnapshot {
+  state: SyncState;
+  mode: SyncMode | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  lastResult: { status: string; duration: number; syncResult: SyncResult } | null;
+}
 
 const DEFAULT_PRICING: PricingConfig = { usdToCop: 1, currencyCode: 'USD', roundTo: 0 };
 
@@ -49,7 +69,7 @@ function normalizePricing(pricing?: Partial<PricingConfig>): PricingConfig {
   styleUrls: ['./admin-config.component.css'],
   standalone: true
 })
-export class AdminConfigComponent implements OnInit {
+export class AdminConfigComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
@@ -65,13 +85,24 @@ export class AdminConfigComponent implements OnInit {
   activeTab = signal<Tab>('editor');
   lastAddedIndex = signal<number>(-1);
 
-  readonly icons = { Star, Sparkles, Library, Plus, Settings2, RefreshCw, Save, Check, AlertCircle, Loader2, DollarSign };
+  // --- Sync ---
+  syncStatus = signal<SyncStatusSnapshot | null>(null);
+  syncBusy = signal<boolean>(false);
+  private syncPoller: ReturnType<typeof setInterval> | null = null;
+
+  readonly icons = { Star, Sparkles, Library, Plus, Settings2, RefreshCw, Save, Check, AlertCircle, Loader2, DollarSign, Database };
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.adminKey = localStorage.getItem(ADMIN_KEY_STORAGE) ?? '';
     }
     this.loadCurrentConfig();
+    // Reflejar una sync que ya esté corriendo (p.ej. tras recargar la página).
+    this.refreshSyncStatus(true);
+  }
+
+  ngOnDestroy() {
+    this.stopPolling();
   }
 
   loadCurrentConfig() {
@@ -270,5 +301,130 @@ export class AdminConfigComponent implements OnInit {
         setTimeout(() => this.statusMessage.set({ text: '', type: null }), 6000);
       }
     });
+  }
+
+  // --- Sync ---
+  private authHeaders(): HttpHeaders {
+    return new HttpHeaders().set('x-admin-key', this.adminKey);
+  }
+
+  /** Dispara una sync (full o delta) y empieza a hacer polling del estado. */
+  triggerSync(mode: SyncMode) {
+    if (!this.adminKey) {
+      this.statusMessage.set({ text: 'Admin Key is required to run a sync.', type: 'error' });
+      return;
+    }
+    if (this.syncBusy() || this.syncStatus()?.state === 'running') {
+      return;
+    }
+    if (mode === 'full' &&
+        !confirm('Run a FULL sync? This re-fetches the entire catalog and can take several minutes.')) {
+      return;
+    }
+
+    this.syncBusy.set(true);
+    this.statusMessage.set({ text: `Starting ${mode} sync...`, type: 'loading' });
+
+    this.http.post(`${environment.apiUrl}/admin/sync?mode=${mode}`, {}, { headers: this.authHeaders() })
+      .subscribe({
+        next: () => {
+          this.statusMessage.set({ text: `${mode === 'full' ? 'Full' : 'Delta'} sync started.`, type: 'loading' });
+          this.startPolling();
+        },
+        error: (err) => {
+          this.syncBusy.set(false);
+          if (err.status === 409) {
+            // Ya hay una sync corriendo: simplemente seguimos su progreso.
+            this.statusMessage.set({ text: 'A sync is already running.', type: 'loading' });
+            this.startPolling();
+            return;
+          }
+          this.handleSyncAuthError(err) || this.statusMessage.set({
+            text: `Sync failed to start (${err.status ?? 'no status'}): ${this.errMsg(err)}`,
+            type: 'error'
+          });
+          setTimeout(() => this.statusMessage.set({ text: '', type: null }), 6000);
+        }
+      });
+  }
+
+  private startPolling() {
+    this.stopPolling();
+    this.syncPoller = setInterval(() => this.refreshSyncStatus(), 3000);
+  }
+
+  private stopPolling() {
+    if (this.syncPoller) {
+      clearInterval(this.syncPoller);
+      this.syncPoller = null;
+    }
+  }
+
+  /** Consulta el estado de la sync. `silent` evita pisar el toast en la carga inicial. */
+  refreshSyncStatus(silent = false) {
+    if (!this.adminKey) return;
+
+    this.http.get<SyncStatusSnapshot>(`${environment.apiUrl}/admin/sync/status`, { headers: this.authHeaders() })
+      .subscribe({
+        next: (snap) => {
+          this.syncStatus.set(snap);
+
+          if (snap.state === 'running') {
+            this.syncBusy.set(true);
+            if (this.syncPoller === null) this.startPolling(); // p.ej. al recargar la página
+            return;
+          }
+
+          // Estado terminal: paramos el polling.
+          this.stopPolling();
+          this.syncBusy.set(false);
+
+          if (silent) return;
+          const r = snap.lastResult?.syncResult;
+          if (snap.state === 'success' && r) {
+            this.statusMessage.set({
+              text: `Sync complete: ${r.created} created, ${r.updated} updated, ${r.failed} failed.`,
+              type: 'success'
+            });
+          } else if (snap.state === 'partial' && r) {
+            this.statusMessage.set({
+              text: `Sync finished with issues: ${r.failed} failed of ${r.totalProcessed}.`,
+              type: 'error'
+            });
+          } else if (snap.state === 'failed') {
+            this.statusMessage.set({
+              text: `Sync failed: ${r?.errors?.[0] ?? 'see server logs'}`,
+              type: 'error'
+            });
+          }
+          if (snap.state !== 'idle') {
+            setTimeout(() => this.statusMessage.set({ text: '', type: null }), 6000);
+          }
+        },
+        error: (err) => {
+          if (!silent) this.handleSyncAuthError(err);
+          this.stopPolling();
+          this.syncBusy.set(false);
+        }
+      });
+  }
+
+  private errMsg(err: any): string {
+    return err?.error?.error || err?.error?.message || err?.message || '';
+  }
+
+  /** Limpia la key guardada en 401/403. Devuelve true si lo manejó. */
+  private handleSyncAuthError(err: any): boolean {
+    if (err.status === 401 || err.status === 403) {
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.removeItem(ADMIN_KEY_STORAGE);
+      }
+      this.statusMessage.set({
+        text: `Unauthorized (${err.status}): ${this.errMsg(err) || 'Invalid Admin Key'}`,
+        type: 'error'
+      });
+      return true;
+    }
+    return false;
   }
 }
